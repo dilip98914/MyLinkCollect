@@ -1,7 +1,7 @@
 {
-  "name": "guru",
+  "name": "server",
   "version": "0.1",
-  "description": "guru: A blogging(nodejs/html/css/js/java..etc resources) + jsbin platform",
+  "description": "",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"

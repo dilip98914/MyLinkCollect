@@ -1,2 +1,0 @@
-# cricket prediction app
-
