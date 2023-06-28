@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+.serverless
+DS_Store
+.env
+variables.env
+rough.txt
