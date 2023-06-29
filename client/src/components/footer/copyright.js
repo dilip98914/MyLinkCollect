@@ -3,7 +3,7 @@ export default function () {
         <footer>
             <div class="container-fluid">
                 &copy; 2023
-                - CryptoJobs
+                - GigsChad
             </div>
         </footer>
     </>

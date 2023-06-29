@@ -1,3 +1,5 @@
+import { NavLink } from 'react-router-dom';
+
 export default function () {
   return <>
     <nav className="navbar navbar-default navbar-static-top">
@@ -9,7 +11,8 @@ export default function () {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <a href="https://crypto.jobs" 
+          <NavLink 
+          to='/'
           style={{
             "width": "40px",
             "height": '40px', 
@@ -19,15 +22,15 @@ export default function () {
             "margin-top": "6px"
               }}>
             <img src="/imgs/cryptojobs-navbar-logo.png" className="img-responsive" />
-          </a>
-          <a className="navbar-brand" href="https://crypto.jobs">
-            CryptoJobs
-          </a>
+          </NavLink>
+          <NavLink className="navbar-brand" to="/">
+            GigsChad
+          </NavLink>
         </div>
         <div className="collapse navbar-collapse" id="app-navbar-collapse">
           <ul className="nav navbar-nav visible-lg">
             <li>
-              <small>Getting you from Web2 to Web3</small>
+              <small>Hire Best Software developers blazing fast!</small>
             </li>
           </ul>
           <ul className="nav navbar-nav navbar-right">
@@ -35,19 +38,21 @@ export default function () {
               <span style={{"padding": "10px"}} className="hidden-xs"></span>
             </li>
 
-            <li><a href="https://crypto.jobs/login" className="post-job normal-btn">Log In</a></li>
-            <li><a href="https://crypto.jobs/register" className="post-job normal-btn">Sign Up</a></li>
-            <li><a href="https://crypto.jobs/hire-talent" className="post-job">Hire Talent</a></li>
+            <li><NavLink 
+              to='/login'
+             className="post-job normal-btn">Log In</NavLink></li>
+            <li><NavLink to="/register" className="post-job normal-btn">Sign Up</NavLink></li>
+            <li><NavLink to="/hire-talent" className="post-job">Hire Talent</NavLink></li>
           </ul>
         </div>
       </div>
     </nav>
     <nav className="navbar navbar-default second-navbar-static-top">
       <ul className="navbar-center">
-        <li><a href="https://crypto.jobs" className="center-btn job-btn">💼 Jobs</a></li>
-        <li><a href="https://crypto.jobs/companies" className="center-btn company-btn">🚀 Companies</a></li>
-        <li><a href="https://crypto.jobs/talent" className="center-btn talent-btn">👋🏻 Talents</a></li>
-        <li><a href="https://crypto.jobs/events" className="center-btn event-btn">📅 Events</a></li>
+        <li><NavLink to="/jobs" className="center-btn job-btn">💼 Jobs</NavLink></li>
+        {/* <li><NavLink to="/companies" className="center-btn company-btn">🚀 Companies</NavLink></li> */}
+        <li><NavLink to="/talent" className="center-btn talent-btn">👋🏻 Talents</NavLink></li>
+        {/* <li><NavLink to="/events" className="center-btn event-btn">📅 Events</NavLink></li> */}
       </ul>
     </nav>
 
