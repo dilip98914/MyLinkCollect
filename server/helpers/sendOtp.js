@@ -13,7 +13,7 @@ exports.whatsapp = async (OTP,phoneNumber) => {
             body: 'your OTP for cricket prediction is '+OTP,
 
             // Senders Number (Twilio Sandbox No.)
-            from: 'whatsapp:+14155238886',//todo:chanage this
+            // from: 'whatsapp:+14155238886',//todo:chanage this
 
             // Number receiving the message
             to: 'whatsapp:'+phoneNumber
