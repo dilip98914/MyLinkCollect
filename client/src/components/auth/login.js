@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
+
 export default function () {
   return <>
     <div class="container-fluid">
@@ -35,9 +37,9 @@ export default function () {
                         <button type="submit" class="btn btn-success">
                           Login
                         </button>
-                        <a class="btn btn-link" href="/password/reset">
+                        <NavLink class="btn btn-link" to="/forget-password" href="/password/reset">
                           Forgot Your Password?
-                        </a>
+                        </NavLink>
                       </div>
                     </div>
                 </form>
