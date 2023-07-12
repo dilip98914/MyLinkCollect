@@ -1,50 +1,72 @@
-const mongoose =require('mongoose');
-const Schema=mongoose.Schema
+const mongoose = require('mongoose');
+var cuid = require('cuid');
 
-const schema=mongoose.Schema({
-  firstName:{
-    type:String,
-    required:true,
-    trim:true
+const schema = mongoose.Schema({
+  id: { type: String, default: cuid() },
+  fullName: {
+    type: String,
   },
-  lastName:{
-    type:String,
-    required:true,
-    trim:true
+  username: {
+    type: String,
+    unique: true
   },
-  username:{
-    type:String,
-    required:true,
-    trim:true,
-    unique:true
+  address: {
+    type: Object,
   },
-  email:{
-    type:String,
-    required:true,
-    trim:true,
-    unique:true
+  email: {
+    type: String,
+    required: [true, "Please provide an Email!"],
+    unique: [true, "Email Exist"],
   },
-  password:{
-    type:String,
-    required:true,
+  password: {
+    type: String,
+    required: [true, "Please provide a password!"],
   },
-  profilePic:{
-    type:String,
-    default:'/images/blank_image.jpeg'
+  profilePic: {
+    type: String,
   },
-  likes:[{
-    type:Schema.Types.ObjectId,
-    ref:'Post'
-  }],
-  retweets:[{
-    type:Schema.Types.ObjectId,
-    ref:'Post'
-  }],
-  isDeleted:{
-    type:Boolean,
-    default:false,
-    required:true
+  resume: {
+    type: String,
   },
-},{timestamps:true})
+  city: String,
+  state: String,
+  country: String,
+  dob: Date,
+  companiesArray: { type: Array, default: [] },
+  projectsArray: { type: Array, default: [] },
+  studyArray: { type: Array, default: [] },
+  type: {
+    type: String,
+    enum: ['developer', 'client'],
+    requied: true
+  },
+  isVerified: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  isBanned: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  wallet: {
+    type: String,
+    default: '0'
+  },
+  rating: {
+    type: String,
+    requied: true,
+    default: '5'
+  },
+  accountNumber: String,
+  ifscCode: String,
+  accountMetaData: Object,
+  upi_ids: { type: Array, default: [] },
+  deletedAt: {
+    type: Date,
+    default: null,
+  },
+}, { timestamps: true })
 
-module.exports=mongoose.model('User',schema)
+module.exports = mongoose.model('User', schema)
