@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function () {
+export default function ({ jobs }) {
   return <>
     <tr>
       <td colspan="3" style={{ "border-top": "0px;" }}>
@@ -27,61 +27,71 @@ export default function () {
         </form>
       </td>
     </tr>
-    <tr className="job-entry highlighted">
-      <td style={{ "width": "100px", "vertical-align": "middle" }}>
-        <NavLink className="job-url text-center" 
-         to="/company-description"
-        >
-          <img src="imgs/XpiJSfTGiYuVhX11p3U8R47OBLlr9twUQNbTxM0K.png" alt="Unlockd" className="company-logo" />
-        </NavLink>
-      </td>
-      <td>
-        <NavLink className="job-url" 
-         to="/company-description"
-        itemprop="url">
-          <p className="job-title">Operations Manager</p>
-          <span>Unlockd</span>
-          <div style={{ "margin-top": "4px;" }} className="hidden-xs">
-            <small>
-              <span>
-                💼 Operations
-              </span>
-              <span style={{ "margin-left": "10px;" }}>
-                ⏰ Full Time
-              </span>
-              <span style={{ "margin-left": "10px;" }}>
-                🌍 Remote
-              </span>
-              <span style={{ "margin-left": "20px;" }}>
-                📌 <b className="text-danger">Sticky</b>
-              </span>
+    {
+      jobs.map(job => {
+        return <tr className={`job-entry ${Math.random() > 0.8 ? "highlighted" : ""}`}>
+          <td style={{ "width": "100px", "vertical-align": "middle" }}>
+            <NavLink className="job-url text-center"
+              to="/company-description"
+            >
+              <img
+                src={`imgs/${job.companyLogo}`}
+                alt="Unlockd" className="company-logo" />
+            </NavLink>
+          </td>
+          <td>
+            <NavLink className="job-url"
+              to="/company-description"
+              itemprop="url">
+              <p className="job-title">{job.title}</p>
+              <span>{job.userIdentity}</span>
+              <div style={{ "margin-top": "4px;" }} className="hidden-xs">
+                <small>
+                  <span>
+                    💼 {job.tags[0]}
+                  </span>
+                  <span style={{ "margin-left": "10px;" }}>
+                    ⏰ {job.tags[1]}
+                  </span>
+                  <span style={{ "margin-left": "10px;" }}>
+                    🌍 {job.tags[2]}
+                  </span>
+                  <span style={{ "margin-left": "20px;" }}>
+                    📌 <b className="text-danger">Sticky</b>
+                  </span>
+                </small>
+              </div>
+            </NavLink>
+          </td>
+          <td style={{ "width": "150px", "vertical-align": "middle;" }}>
+            <small style={{ "display": "inline-block", "margin-top": "6px;" }}>
+              <div>
+                <span itemprop="datePosted" datetime="2023-06-16" style={{ "color": "#888;" }}>
+                  {/* 12 days ago */}
+                  {job.daysAgo}
+                </span>
+                <br />
+                ✅ {job.applicants}
+              </div>
             </small>
-          </div>
-        </NavLink>
-      </td>
-      <td style={{ "width": "150px", "vertical-align": "middle;" }}>
-        <small style={{ "display": "inline-block", "margin-top": "6px;" }}>
-          <div>
-            <span itemprop="datePosted" datetime="2023-06-16" style={{ "color": "#888;" }}>12 days ago</span>
-            <br />
-            ✅ 47 applications
-          </div>
-        </small>
-      </td>
-    </tr>
-    <tr className="job-entry ">
+          </td>
+        </tr>
+
+      })
+    }
+    {/* <tr className="job-entry ">
       <td style={{ "width": "100px", "vertical-align": "middle" }}>
-        <NavLink className="job-url text-center" 
-        to="/company-description"
+        <NavLink className="job-url text-center"
+          to="/company-description"
         >
-        
+
           <img src="imgs /ncJnroXT02yhaoed5LSaIOxcgw0ROqBVYdChJ1Of.png" alt="ether.fi" className="company-logo" />
         </NavLink>
       </td>
       <td>
-        <NavLink className="job-url" 
-         to="/company-description"
-        itemprop="url">
+        <NavLink className="job-url"
+          to="/company-description"
+          itemprop="url">
           <p className="job-title">UI/UX Designer, Head of Design</p>
           <span>ether.fi</span>
           <div style={{ "margin-top": "4px;" }} className="hidden-xs">
@@ -111,8 +121,6 @@ export default function () {
           </div>
         </small>
       </td>
-    </tr>
-
-
+    </tr> */}
   </>
 }

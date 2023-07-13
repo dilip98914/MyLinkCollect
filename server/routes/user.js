@@ -11,7 +11,8 @@ const LoginLogs = require('../models/loginLogs')
 
 //todo:google login
 router.post('/register', async (req, res, next) => {
-  const { email, password } = req.body
+  console.log(req.body,'req.body')
+  const { email, password, firstName, lastName, type } = req.body
   const found = await User.findOne({ email });
   if (found) return res.status(400).send({ message: "User already exists!, please try different email" })
 
@@ -19,6 +20,8 @@ router.post('/register', async (req, res, next) => {
     const user = new User({
       email: email,
       password: hashedPassword,
+      fullName: `${firstName} ${lastName}`,
+      type
     });
     user.save().then(async (result) => {
       await LoginLogs.create({

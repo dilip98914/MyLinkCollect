@@ -9,5 +9,5 @@ const { authenticateSession } = require('../middlewares/auth')
 module.exports = (app) => {
   app.use(`/${API_VERSION}/profile`, authenticateSession, profileRoutes)
   app.use(`/${API_VERSION}/user`, userRoutes)
-  app.use(`/${API_VERSION}/project`, authenticateSession, projectRoutes)
+  app.use(`/${API_VERSION}/project`, projectRoutes)
 }

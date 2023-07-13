@@ -76,6 +76,92 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// var delta = Math.abs(date_future - date_now) / 1000;
+
+// // calculate (and subtract) whole days
+// var days = Math.floor(delta / 86400);
+// delta -= days * 86400;
+
+// // calculate (and subtract) whole hours
+// var hours = Math.floor(delta / 3600) % 24;
+// delta -= hours * 3600;
+
+// // calculate (and subtract) whole minutes
+// var minutes = Math.floor(delta / 60) % 60;
+// delta -= minutes * 60;
+
+// // what's left is seconds
+// var seconds = delta % 60;  // in theory the modulus is not required
+const { getRandomChoice } = require('../helpers/utility')
+
+router.get('/home', async (req, res, next) => {
+  //todo : only send required columns
+  const { project_id } = req.query;
+  if (project_id) {
+    Project.findOne({
+      id: project_id
+    }).then(async r => {
+      //todo implement populate(maybe or not)?
+      const userFound = await User.findOne({
+        id: r.uploader_user_id
+      })
+
+      return res.status(200).send({
+        message: 'project fetched successfully!',
+        data: r
+      })
+    }).catch(err => {
+      console.error(err)
+      return INTERNAL_SERVER_ERROR()
+    })
+
+  } else {
+    Project.find({}).then(async r => {
+      const responseData = []
+
+      for (let i = 0; i < r.length; i++) {
+        const userFound = await User.findOne({
+          id: r[i].uploader_user_id
+        })
+        const delta_time_ms = new Date().getTime() - new Date(r[i].createdAt).getTime()
+        const inS = delta_time_ms / 1000;
+        const days = Math.floor(inS / 86400);
+        const company_logos = ['onelap.png', 'micro.webp.', 'chrome.png', 'mordor.jpeg']
+        const applicant_options = [10, 20, 35, 67, 101, 789, 12, 1, 89]
+        const tags = [
+          ['operations', 'fulltime', 'remote'],
+          ['web designer', 'parttime', 'remote'],
+          ['web developer', 'parttime', 'remote'],
+          ['backend', 'contract', 'office'],
+          ['crypto developer', 'contract', 'remote'],
+          ['IOT maintainance', 'contract', 'office'],
+        ]
+        const identities = ['Emily', 'Dilip', 'Jan Basha', 'Amarpreet', 'Aditya Pranav', 'Vishal Sharma', 'Priyanka', 'Amit Kumar', 'Surav Bansal', 'Vansh']
+
+        responseData.push({
+          // userIdentity: userFound.username || userFound.email,
+          userIdentity: getRandomChoice(identities),
+          budget: r[i].budget,
+          daysAgo: `${days} ago`,
+          expiry: new Date(r[i].delete_on).getDate(),
+          companyLogo: getRandomChoice(company_logos),
+          title: r[i].title,
+          applicants: getRandomChoice(applicant_options),
+          tags: getRandomChoice(tags)
+        })
+      }
+      return res.status(200).send({
+        message: 'project fetched successfully!',
+        data: responseData
+      })
+    }).catch(err => {
+      console.error(err)
+      return INTERNAL_SERVER_ERROR()
+    })
+  }
+})
+
+
 router.post('/request', async (req, res, next) => {
   //todo : only send required columns
   const { project_id, amountProposed, type, deadline } = req.query;
