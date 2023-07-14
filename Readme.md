@@ -17,6 +17,8 @@ seprate an engine to rapid prototype ideas and cli a tool to rapid prototyping
 google analytics
 encrypted locker that save my website from being accessible and also store important info here in case of emergency.
 cloudflare protection
+csrf protecttion
+cloudflare protection
 
 ##############################if this startup fails then I will use same website&code and open a service based company for sure.....
 that means grinding is sure....##############################

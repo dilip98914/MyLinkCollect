@@ -8,7 +8,7 @@ const schema = mongoose.Schema({
   },
   username: {
     type: String,
-    unique: true
+    // unique: true
   },
   address: {
     type: Object,
@@ -16,7 +16,7 @@ const schema = mongoose.Schema({
   email: {
     type: String,
     required: [true, "Please provide an Email!"],
-    unique: [true, "Email Exist"],
+    // unique: [true, "Email Exist"],
   },
   password: {
     type: String,

@@ -3,11 +3,42 @@ import GigsList from "../gigsList";
 import PaginationWIdget from "../paginationWIdget";
 import SideWidget from "../sideWidget";
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 
 export default function () {
   const [jobs, setJobs] = useState([])//todo a  dummy job in state
+  const history = useHistory()
+
 
   useEffect(() => {
+    if (window.previousPage == 'login' && window.store.isAuth == true) {
+      alert('You are already logged in!')
+    } else {
+      if (localStorage.getItem('token')) {
+        const url = `http://localhost:3001/api/v1/user/auth`
+        axios.post(url, { token: localStorage.getItem('token') }).then(response => {
+          if (response.data.token == null) {
+            window.store.previousPage = 'home';
+            window.store.isAuth = false;
+            window.store.authMessage = "token invalid!";
+            history.push('/login');
+          } else {
+            localStorage.setItem('isAuthenticated', "true")
+            window.previousPage = 'home'
+            // alert('Welcome ' + response.data.email)
+          }
+        }).catch(err => {
+          history.push('/login');
+          alert('Something went wrong!')
+        })
+
+      } else {
+        history.push('/login');
+      }
+
+
+    }
+
     getJobs()
   }, [])
 

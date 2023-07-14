@@ -152,7 +152,7 @@ router.get('/home', async (req, res, next) => {
       }
       return res.status(200).send({
         message: 'project fetched successfully!',
-        data: responseData
+        data: responseData.slice(0, 10)
       })
     }).catch(err => {
       console.error(err)

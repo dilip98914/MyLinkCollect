@@ -1,0 +1,3 @@
+window.store = {
+  previousPage: null
+}

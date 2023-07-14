@@ -1,36 +1,33 @@
 import { useEffect, useState } from "react";
 import axios from 'axios'
-
+import { useHistory } from 'react-router-dom'
 export default function () {
+  const history = useHistory()
   //follor a pattern , state is tranferred as it is to backend
-
   const [user, setUser] = useState({
-    email: '',
-    password: '',
-    confirmPassword: '',
-    type: '',
-    firstName: '',
-    lastName: '',
+    email: 'ab@ab.com',
+    password: 'ab@12345',
+    confirmPassword: 'ab@12345',
+    type: 'developer',
+    firstName: 'ab',
+    lastName: 'ab',
+    username: 'ab123'
   })
-
-  useEffect(() => {
-    // registerUser()
-  }, [])
 
   const registerUser = (e) => {
     e.preventDefault()
     const url = `http://localhost:3001/api/v1/user/register`
-    // if (user.password !== user.confirmPassword) {
-    //   alert('password dont match in fields!')
-    //   return
-    // }
-    console.log('usssssssssssssssssssssss', user)
+    if (user.password !== user.confirmPassword) {
+      alert('password dont match in fields!')
+      return
+    }
+    console.log("aaaaaaaaaaaaa", user)
     axios.post(url, user).then(response => {
-      // setJobs(response.data.data)
+      history.push('/login')
       console.log("rrrrrrrrrrrrrrrrr", response.data.data)
-    })
+    }).catch(err => alert('Something went wrong!'))
   }
-
+  // https://www.joshwcomeau.com/react/data-binding/
   const handleChange = (e) => {
     setUser({
       ...user,
@@ -48,11 +45,10 @@ export default function () {
               <h3>Signup</h3>
               <hr />
               <form class="form-horizontal" method="POST">
-                {/* <input type="hidden" name="_token" value="ivzk6AOiCXznEQLXb04vS9czWXRYL5DAsU9IliPB" /> */}
                 <div class="form-group">
                   <div class="col-md-12">
                     <label>What are you looking for?</label>
-                    <select value={user.type} name="type" class="form-control" required>
+                    <select value={user.type} name="type" onChange={handleChange} class="form-control" required>
                       <option value>Select your Goal</option>
                       <option value='developer'>developer</option>
                       <option value="client">client</option>
@@ -75,6 +71,12 @@ export default function () {
                   <div class="col-md-12">
                     <label>Email Address</label>
                     <input type="email" class="form-control" value={user.email} name="email" onChange={handleChange} autocomplete="username" required />
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-12">
+                    <label>Username</label>
+                    <input type="text" value={user.username} class="form-control" onChange={handleChange} name="username" required autofocus />
                   </div>
                 </div>
                 <div class="form-group">

@@ -29,7 +29,7 @@ export default function ({ jobs }) {
     </tr>
     {
       jobs.map(job => {
-        return <tr className={`job-entry ${Math.random() > 0.8 ? "highlighted" : ""}`}>
+        return <tr className="job-entry">
           <td style={{ "width": "100px", "vertical-align": "middle" }}>
             <NavLink className="job-url text-center"
               to="/company-description"

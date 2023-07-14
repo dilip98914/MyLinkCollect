@@ -1,13 +1,14 @@
 import './App.css';
 import Routes from './Routes';
 import { ReactSlackChat } from 'react-slack-chat';
+import './store'
 
 function App() {
   return (
     <>
       <Routes />
       <ReactSlackChat
-        botName='user_id: 189789' 
+        botName='user_id: 189789'
         apiToken='eG94Yi01NTM5ODMwMzYyOTQ5LTU1MjgyMzc1ODMyMjMtZVlzVGpNNVVJSklkNFR1UjBvUHllT3Ex'
         channels={[
           {

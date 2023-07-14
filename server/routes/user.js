@@ -11,7 +11,7 @@ const LoginLogs = require('../models/loginLogs')
 
 //todo:google login
 router.post('/register', async (req, res, next) => {
-  console.log(req.body,'req.body')
+  console.log(req.body, 'req.body')
   const { email, password, firstName, lastName, type } = req.body
   const found = await User.findOne({ email });
   if (found) return res.status(400).send({ message: "User already exists!, please try different email" })
@@ -32,6 +32,7 @@ router.post('/register', async (req, res, next) => {
         result,
       });
     }).catch((error) => {
+      console.error(error)
       res.status(500).send({
         message: "Error creating user",
         error,
@@ -47,7 +48,6 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/login', async (req, res, next) => {
   const { email, password } = req.body
-
   User.findOne({ email }).then((user) => {
     if (user.deletedAt != null) {
       return res.status(400).send({
@@ -93,6 +93,34 @@ router.post('/login', async (req, res, next) => {
     });
   });
 })
+
+router.post('/auth', async (req, res, next) => {
+  try {
+    const { token } = req.body
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    const isFound = await User.findOne({ email: decoded.userEmail })
+    if (!isFound) {
+      return res.status(401).send({
+        message: "Invalid token",
+        token: null
+      });
+    }
+    res.status(200).send({
+      message: "Login Successful",
+      email: decoded.userEmail,
+      token,
+    });
+
+  } catch (err) {
+    console.err(err)
+    res.status(500).send({
+      message: "Something went wrong!",
+      token: null
+    });
+  }
+})
+
+
 
 //register admin would be manual
 
