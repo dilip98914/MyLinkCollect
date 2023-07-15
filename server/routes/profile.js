@@ -165,11 +165,54 @@ router.get('/pic/:name', async (req, res, next) => {
     });
   }
 })
+const { getRandomChoice } = require('../helpers/utility')
 
-router.get('/', async (req, res, next) => {
+router.get('/developer', async (req, res, next) => {
   try {
-    console.log("sale", req.user);
-    return res.send('ok')
+    // todo
+    //filter of rating, city,langugae preference,
+
+    const devs = await User.find({
+      type: 'developer',
+      isVerified: true,
+      isBanned: false,
+      deletedAt: null
+    })
+    //todo:pagination
+    const repsonseData = devs.map(elt => {
+      const { username, profilePic, resume, city, state, country, shortSummary, title, projectsWorked, projectsDelivered } = elt;
+      return {
+        username, profilePic, resume, city, state, country, shortSummary, title, projectsWorked, projectsDelivered
+      }
+    })
+
+    const profilePics = ['profile-dummy.png', 'girl2.jpg', 'female.jpg', 'mat.jpg']
+    const usernames = ['dilip98914', 'tony_s', 'peggy118', 'kate', 'mat_murdock']
+    const cities = ['delhi', 'florida', 'mumabi', 'japan', 'germany']
+    const countries = ['india', 'us', 'japan', 'uk']
+    const states = ['delhi', 'florida', 'mumabi', 'japan', 'germany']
+    const shortSummaries = ['I am a web developer', 'I am a designer', 'I am a indie dev', 'I am a hitman', 'I am a superhero', 'I am a model']
+    const titles = ['web developer', 'designer', 'indie dev', 'hitman', 'superhero', 'model']
+    const delivered = ['23', '34', '89', '90', '10', '1', '0']
+
+    const dummtData = [], dummyLength = 10;
+    for (let i = 0; i < dummyLength; i++) {
+      dummtData.push({
+        username: getRandomChoice(usernames),
+        profilePic: getRandomChoice(profilePics),
+        state: getRandomChoice(states),
+        country: getRandomChoice(countries),
+        shortSummary: getRandomChoice(shortSummaries),
+        title: getRandomChoice(titles),
+        projectsDelivered: getRandomChoice(delivered)
+      })
+    }
+
+
+    return res.status(200).send({
+      data: dummtData,//repsonseData,
+      message: 'developers fetched successfully!'
+    })
   } catch (err) {
     console.error(err)
     return res.status(500).send({ message: 'Something went wrong!' })

@@ -7,6 +7,8 @@ import LoginPopup from './components/auth/loginPopup.js';
 import RegisterPopup from './components/auth/registerPopup.js';
 import Register from './components/auth/register.js';
 import Container from './components/container';
+import DeveloperContainer from './components/container/developerContainer.js';
+
 import HireTalent from './components/hireTalent/index.js';
 import CreateCompany from './components/createCompany/index.js';
 import GigDescription from './components/gigDescription/index.js';
@@ -19,7 +21,9 @@ function Routes(props) {
     <div>
       <BrowserRouter>
         <Switch>
+          {/* route rediect is handled by privat route?? set it up using context api */}
           <PrivateRoute exact path="/" Component1={Home} SubComponent={Container} name="home" />
+          <PrivateRoute exact path="/devs" Component1={Home} SubComponent={DeveloperContainer} name="devs" />
           <Route path='/login'>
             <Home Component={Login} />
           </Route>

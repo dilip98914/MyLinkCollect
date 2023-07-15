@@ -26,7 +26,8 @@ export default function () {
             <span className="icon-bar"></span>
             <span className="icon-bar"></span>
           </button>
-          <button onClick={logoutUser}>logout1</button>
+          {/* testing purpose */}
+          {/* <button onClick={logoutUser}>logout1</button> */}
           <NavLink
             to='/'
             style={{
@@ -78,7 +79,7 @@ export default function () {
       <ul className="navbar-center">
         <li><NavLink to="/" className="center-btn job-btn">💼 Jobs</NavLink></li>
         {/* <li><NavLink to="/companies" className="center-btn company-btn">🚀 Companies</NavLink></li> */}
-        <li><NavLink to="/developers" className="center-btn talent-btn">👋🏻 Developers</NavLink></li>
+        <li><NavLink to="/devs" className="center-btn talent-btn">👋🏻 Developers</NavLink></li>
         {/* <li><NavLink to="/events" className="center-btn event-btn">📅 Events</NavLink></li> */}
       </ul>
     </nav>

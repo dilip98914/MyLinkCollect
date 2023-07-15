@@ -59,6 +59,24 @@ const schema = mongoose.Schema({
     requied: true,
     default: '5'
   },
+  shortSummary: {
+    type: String,
+    requied: true,//todo:make length limit
+  },
+  title: {
+    type: String,
+    requied: true,
+  },
+  projectsWorked: {
+    type: String,
+    requied: true,
+    default: 0,
+  },
+  projectsDelivered: {
+    type: String,
+    requied: true,
+    default: 0,
+  },
   accountNumber: String,
   ifscCode: String,
   accountMetaData: Object,
