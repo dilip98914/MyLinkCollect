@@ -112,7 +112,7 @@ router.post('/auth', async (req, res, next) => {
     });
 
   } catch (err) {
-    console.err(err)
+    console.error(err)
     res.status(500).send({
       message: "Something went wrong!",
       token: null

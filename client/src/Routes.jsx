@@ -14,7 +14,7 @@ import CreateCompany from './components/createCompany/index.js';
 import GigDescription from './components/gigDescription/index.js';
 import ForgetPassword from './components/auth/forgetPassword.js';
 import ResetPassword from './components/auth/resetPassword.js';
-
+import UserProfile from './components/userProfile/index.js';
 
 function Routes(props) {
   return (
@@ -53,6 +53,9 @@ function Routes(props) {
           </Route>
           <Route path='/company/create' exact>
             <Home Component={CreateCompany} />
+          </Route>
+          <Route path='/profile' exact>
+            <Home Component={UserProfile} />
           </Route>
         </Switch>
       </BrowserRouter>

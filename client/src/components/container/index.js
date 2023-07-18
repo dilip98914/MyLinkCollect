@@ -60,7 +60,7 @@ export default function () {
                 <tbody>
                   <tr>
                     <td colspan="3" style={{ "border-top": "0px;" }}>
-                      <h3 className="latest-jobs">✨ Latest Web3 jobs</h3>
+                      <h3 className="latest-jobs"> Latest Jobs</h3>
                     </td>
                   </tr>
                   <GigsList jobs={jobs} />

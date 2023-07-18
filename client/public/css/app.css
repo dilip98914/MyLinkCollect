@@ -7,6 +7,13 @@
   src: url(/fonts/ShareTechMono-Regular.ttf?d753b5dc50d171ecc94b53b1bb8cede1)
 }
 
+:root {
+  --primaryBlue: #5e7ceb;
+  --primaryBlueHover: #879ae0;
+  --primaryFreeLancer: #00aeff;
+  --footerColor: #12141b
+}
+
 /*!* Bootstrap v3.4.1 (https://getbootstrap.com/)
 * Copyright 2011-2019 Twitter, Inc.
 * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)*/
@@ -8162,7 +8169,8 @@ button.close {
 
 .navbar-default .navbar-nav>li>a {
   background-color: #00b050;
-  border: 1px solid #00b050;
+  background-color: var(--primaryFreeLancer);
+  border: 1px solid var(--primaryFreeLancer);
   border-radius: 8px;
   color: #fff;
   font-family: Share Tech Mono, sans-serif;
@@ -8177,7 +8185,7 @@ button.close {
 }
 
 .navbar-default .navbar-nav>li>a:hover {
-  background-color: #00c459;
+  background-color: #000;
   border-color: #00c459;
   color: #fff
 }
@@ -8202,25 +8210,29 @@ button.close {
 .navbar-default .navbar-nav>li>a.normal-btn {
   background: #fff;
   border: 2px solid #738797;
-  color: #738797
+  /* color: #738797 */
+  color: var(--primaryFreeLancer);
 }
 
 .navbar-default .navbar-nav>li>a.success-btn {
   background: #fff;
   border: 2px solid #00b050;
-  color: #00b050
+  /* color: #00b050 */
+  color: var(--primaryFreeLancer);
 }
 
+/* prevColor: #00b050*/
+
+
 .navbar-default .navbar-brand {
-  color: #70c98e;
+  /* color: #70c98e; */
+  color: var(--primaryFreeLancer);
   font-family: Share Tech Mono, sans-serif;
   font-size: 28px;
   font-weight: 700
 }
 
-.navbar-default .navbar-brand:hover {
-  color: #70c98e
-}
+.navbar-default .navbar-brand:hover {}
 
 .navbar-default .navbar-center {
   margin: 0;
@@ -8387,7 +8399,7 @@ h3.latest-jobs {
 }
 
 .job-entry:hover {
-  background-color: #5e7ceb;
+  background-color: var(--primaryFreeLancer);
 }
 
 .table-jobs a.job-url {
@@ -8442,7 +8454,8 @@ h3.latest-jobs {
 }
 
 .btn-post-job {
-  width: 100%
+  width: 100%;
+  color: var(--primaryFreeLancer);
 }
 
 footer {
@@ -8492,13 +8505,16 @@ small.optional {
 
 .bottom-structure {
   background: #e8f6ff;
+  background: var(--footerColor);
   border-top: 1px solid #d3e0e9;
   padding-bottom: 40px;
-  padding-top: 20px
+  padding-top: 20px;
+  color: white;
 }
 
 .bottom-structure .footer-link {
-  display: block
+  display: block;
+  color: white;
 }
 
 .bottom-structure .caret {

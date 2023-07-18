@@ -35,13 +35,13 @@ export default function () {
               "height": '40px',
               "float": "left",
               "margin-left": "15px",
-              "margin-right": "15px",
+              // "margin-right": "5px",
               "margin-top": "6px"
             }}>
-            <img src="/imgs/cryptojobs-navbar-logo.png" className="img-responsive" />
+            <img src="/imgs/logo.svg" className="img-responsive" />
           </NavLink>
           <NavLink className="navbar-brand" to="/">
-            GigsChad
+            GiggChad
           </NavLink>
         </div>
         <div className="collapse navbar-collapse" id="app-navbar-collapse">
@@ -54,7 +54,6 @@ export default function () {
             <li>
               <span style={{ "padding": "10px" }} className="hidden-xs"></span>
             </li>
-
             <li><NavLink
               to={isAuthenticated == true ? '/profile' : '/login'}
               className="post-job normal-btn">{isAuthenticated == true ? "Profile" : "Login"}</NavLink></li>
@@ -63,10 +62,11 @@ export default function () {
               {isAuthenticated == true ?
                 <button onClick={logoutUser} style={{
                   margin: '5px auto',
-                  padding: '6px 30px',
-                }} class="btn btn-danger">
+                  padding: '6px 40px',
+                }} className="btn btn-primary">
                   Logout
                 </button>
+
                 :
                 <NavLink to="/register" className="post-job normal-btn">{isAuthenticated == true ? "Logout" : "Register"}</NavLink>
               }
