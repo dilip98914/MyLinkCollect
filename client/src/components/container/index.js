@@ -53,7 +53,17 @@ export default function () {
   return <>
     <div className="container-fluid">
       <div className="row main-content">
-        <div className="col-md-8 content-panel">
+        <div style={{
+          float: 'none',
+          margin: 'auto'
+        }} className="col-md-10  content-panel">
+          <div style={{ textAlign: 'center' }} className="jumbotron">
+            <h3>Privacy Oriented freelance platform for developers and clients/companies</h3>
+            <p>Register in 2 simple steps: No hassle of creating portfolio</p>
+            <p>Find best talents from big techs prodigy to experienced engineers  </p>
+
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Register Now!</a></p>
+          </div>
           <div className="panel panel-default">
             <div className="panel-body">
               <table className="table table-jobs">
@@ -70,7 +80,7 @@ export default function () {
             <PaginationWIdget />
           </div>
         </div>
-        <SideWidget />
+        {/* <SideWidget /> */}
       </div>
     </div>
   </>

@@ -4,7 +4,9 @@ export default function ({ developers }) {
   return <>
     <tr>
       <td colspan="3" style={{ "border-top": "0px;" }}>
-        <form className="form-inline form-search" action="https://crypto.jobs" method="get">
+        <form className="form-inline form-search"
+          // action="https://crypto.jobs"
+          method="get">
           <div className="row">
             <div className="form-group col-md-4 col-sm-12">
               <input type="text" className="form-control" name="search" placeholder="🔍 Role, company, skill" />

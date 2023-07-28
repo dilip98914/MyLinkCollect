@@ -4,7 +4,9 @@ export default function () {
       <div class="row main-content">
         <div class="col-md-8 content-fluid col-md-offset-2">
           <div class="panel panel-default">
-            <form method="POST" action="https://crypto.jobs/companies/create" enctype="multipart/form-data">
+            <form method="POST"
+              // action="https://crypto.jobs/companies/create"
+              enctype="multipart/form-data">
               <input type="hidden" name="_token"
                 value="AVHBpOJBvMDjWCtPE12QN7Ppr0XxIeJQ5qQFoeIc" /> <h3 class="title-page">Create New Company Page</h3>
               <div class="header-sec">

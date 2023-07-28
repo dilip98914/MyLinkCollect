@@ -58,7 +58,10 @@ export default function () {
   return <>
     <div className="container-fluid">
       <div className="row main-content">
-        <div className="col-md-8 content-panel">
+        <div style={{
+          float: 'none',
+          margin: 'auto'
+        }} className="col-md-10 content-panel">
           <div className="panel panel-default">
             <div className="panel-body">
               <table className="table table-jobs">

@@ -7,7 +7,7 @@ const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const dbConfig = require("../config/key");
 const { authenticateSession } = require('../middlewares/auth')
-
+const { sendMail } = require('../services/email')
 router.put('/', async (req, res, next) => {
   // const schema = Joi.object({
   //   username: Joi.string()
@@ -36,7 +36,7 @@ router.put('/', async (req, res, next) => {
   // })
   // schema.validate(req.body)
   User.findOneAndUpdate({ id: req.user.id }, req.body.updatePayload).then(result => {
-    return res.send(200).send({
+    return res.status(200).send({
       message: 'Updated Profile Successfully!',
       data: result
     })
@@ -45,6 +45,53 @@ router.put('/', async (req, res, next) => {
     res.status(500).send({ message: "Something went wrong!" })
   })
 })
+
+
+//it is accessble for logged in user only
+router.get('/', async (req, res, next) => {
+  console.log('rrrr', req.user)
+  User.findOne({ id: req.user.userId }).then(result => {
+    if (result.isBanned || result.deletedAt != null) {
+      return res.status(401).send({ message: "It seems you are temporarily blocked or your account is deleted!" })
+    }
+    const { email, fullName, username, address, password, profilePic,
+      resume, city, state, country, dob, isVerified, rating,
+      shortSummary, title, accountNumber, ifscCode, upi_ids } = result;
+
+    return res.status(200).send({
+      message: 'Profile fetched Successfully!',
+      data: {
+        email: 'dg@gmail.com',
+        fullName: 'dilip gupta',
+        username: 'dgbouncer',
+        address: '555/5 ward no-3 mehrauli, New Delhi-110030',
+        // password:'',//todo change password should be different and via email
+        profilePic: 'mat.jpg',
+        // resume, todo
+        city: 'delhi',
+        state: 'delhi',
+        country: 'india',
+        dob: '12/10/1997',
+        isVerified: false,
+        rating: 3,
+        shortSumm: `
+        Experienced Backend Engineer with a demonstrated history of working in the information technology and services industry.
+        Skilled in node.js, postgreSQL, ArangoDB, mongodb, rabbitmq and Nginx.
+        Worked on various fintech products like galaxycard(currently working) Kashware(fintech), Hoppy(vehicle service booking application) etc. 
+       Strong engineering professional with a Bachelor of Technology - BTech focused in computer science and engineering from Maharaja Surajmal Institute Of Technology. 
+        `,
+        title: 'Backend developer',
+        accountNumber: '8989095634',
+        ifscCode: 'IDIBM089',
+        upi_ids: ['dilip9891@ybl', '89789@paytm']
+      }
+    })
+  }).catch(err => {
+    console.error(err)
+    return res.status(500).send({ message: "Something went wrong!" })
+  })
+})
+
 
 router.delete('/', async (req, res, next) => {
   await User.findOneAndUpdate({
@@ -59,7 +106,7 @@ router.post('/resume', async (req, res, next) => {
     //we essentially override resume if uploaded again!
     //todo set limit and minimum time span 
     User.findOneAndUpdate({ id: req.user.id }, { resume: req.file.filename }).then(result => {
-      return res.send(200).send({
+      return res.status(200).send({
         message: 'resume uploaded successfully'
       })
     }).catch(e => {
@@ -70,6 +117,38 @@ router.post('/resume', async (req, res, next) => {
     return res.status(400).send({
       message: 'invalid file type!'
     })
+  }
+})
+
+router.get('/verify/request', async (req, res, next) => {
+  try {
+
+    const found = await verifyRequest.findOne({
+      request_user_id: req.user.userId
+    })
+
+    if (!found) {
+      // await verifyRequest.create({
+      //   request_user_id: req.user.userId,
+      //   status: 'pending'
+      // })
+      //send admin 
+      await sendMail({
+        email: process.env.admin_mail,
+        subject: 'A New verify Request is Raised!',
+        html: `
+          A New verify Request is Raised!
+          By : ${req.user.userEmail}
+          Regards
+          <strong>GigsChad</strong>
+        `
+      })
+      return res.status(200).send({ message: 'Verification Request is successfully raised!', data: { new: true } })
+    }
+    return res.status(200).send({ message: 'Verification Request is already raised!', data: { new: false } })
+  } catch (err) {
+    console.error(err)
+    return res.status(500).send({ message: 'Something went wrong!' })
   }
 })
 
@@ -84,6 +163,7 @@ router.post('/verify', async (req, res, next) => {
     return res.status(500).send({ message: 'Something went wrong!' })
   }
 })
+
 
 router.post('/unverify', async (req, res, next) => {
   try {
@@ -120,7 +200,7 @@ router.post('/pic', upload.single("fileToUpload"), async (req, res, next) => {
   if (req.file.mimetype == 'image/png' || req.file.mimetype == 'image/jpeg') {
     //we essentially override profile pic if uploaded again! 
     User.findOneAndUpdate({ id: req.user.id }, { profilePic: req.file.filename }).then(result => {
-      return res.send(200).send({
+      return res.status(200).send({
         message: 'profile pic uploaded successfully'
       })
     }).catch(e => {
@@ -165,7 +245,8 @@ router.get('/pic/:name', async (req, res, next) => {
     });
   }
 })
-const { getRandomChoice } = require('../helpers/utility')
+const { getRandomChoice } = require('../helpers/utility');
+const verifyRequest = require('../models/verifyRequest');
 
 router.get('/developer', async (req, res, next) => {
   try {

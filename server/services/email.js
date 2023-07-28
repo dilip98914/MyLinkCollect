@@ -12,7 +12,7 @@ function generateMail(from, to, subject, html) {
 
 }
 
-export default async function ({ email, subject, html }) {
+exports.sendMail = function ({ email, subject, html }) {
   const from = 'dilip98914@gmail.com'//hardcoded for now
   const client = nodemailer.createTransport({
     service: "Gmail",

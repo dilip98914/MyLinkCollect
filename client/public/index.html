@@ -2,169 +2,171 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <meta name="description" content="Web site created using create-react-app" />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <link rel="stylesheet" type="text/css" href="/css/app.css">
-  <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
-  <title>GiggsChad</title>
+    <meta charset="utf-8" />
+    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+    <link rel="icon" href="imgs/logo.svg" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="stylesheet" type="text/css" href="css/app.css">
+
+    <title>GiggsChad</title>
 </head>
 
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
-  <script src="/js/app.js"></script>
-  <script src="/js/api.js"></script>
-  <script type="text/javascript">
-      $(document).ready(function() {
-          $(".create-job-link").click(function(){
-              $('.global-btn-login').attr('data-typepopup', 'create_job');
-              $('.global-btn-register').attr('data-typepopup', 'create_job');
-              $('#modal-global-login').modal('show');
-          });
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <script src="/js/app.js"></script>
+    <script src="/js/api.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".create-job-link").click(function () {
+                $('.global-btn-login').attr('data-typepopup', 'create_job');
+                $('.global-btn-register').attr('data-typepopup', 'create_job');
+                $('#modal-global-login').modal('show');
+            });
 
-          $(".create-event-link").click(function(){
-              $('.global-btn-login').attr('data-typepopup', 'create_event');
-              $('.global-btn-register').attr('data-typepopup', 'create_event');
-              $('#modal-global-login').modal('show');
-          });
+            $(".create-event-link").click(function () {
+                $('.global-btn-login').attr('data-typepopup', 'create_event');
+                $('.global-btn-register').attr('data-typepopup', 'create_event');
+                $('#modal-global-login').modal('show');
+            });
 
-          $(".global-btn-modal-login").click(function(){
-              $(".global-login-form .error").text('');
-              $('#modal-global-login').modal('show');
-              $('#modal-global-signup').modal('hide');
-          });
+            $(".global-btn-modal-login").click(function () {
+                $(".global-login-form .error").text('');
+                $('#modal-global-login').modal('show');
+                $('#modal-global-signup').modal('hide');
+            });
 
-          $(".global-btn-modal-signup").click(function(){
-              $(".global-signup-form .error").text('');
-              $('#modal-global-signup').modal('show');
-              $('#modal-global-login').modal('hide');
-          });
+            $(".global-btn-modal-signup").click(function () {
+                $(".global-signup-form .error").text('');
+                $('#modal-global-signup').modal('show');
+                $('#modal-global-login').modal('hide');
+            });
 
-          let searchParams = new URLSearchParams(window.location.search);
-          if(searchParams.has('modal')){
-              if(searchParams.get('modal') == 'create_event'){
-                  $("#create-event-modal .modal-title").html('Create New Event');
-                  $("#create-event-modal .text-prompt").html('Select Page to Create Event');
-                  $("#create-event-modal .text-prompt-nocp").html('To create an Event, create a new Company Page');
-                  $(".type").val('event');
-                  $('#create-event-modal').modal('show');
-              }
-              if(searchParams.get('modal') == 'create_job'){
-                  $("#create-event-modal .modal-title").html('Post a Job');
-                  $("#create-event-modal .text-prompt").html('Select Page to Post a Job');
-                  $("#create-event-modal .text-prompt-nocp").html('To post a Job, create a new Company Page');
-                  $(".type").val('job');
-                  $('#create-event-modal').modal('show');
-              }
-          }
+            let searchParams = new URLSearchParams(window.location.search);
+            if (searchParams.has('modal')) {
+                if (searchParams.get('modal') == 'create_event') {
+                    $("#create-event-modal .modal-title").html('Create New Event');
+                    $("#create-event-modal .text-prompt").html('Select Page to Create Event');
+                    $("#create-event-modal .text-prompt-nocp").html('To create an Event, create a new Company Page');
+                    $(".type").val('event');
+                    $('#create-event-modal').modal('show');
+                }
+                if (searchParams.get('modal') == 'create_job') {
+                    $("#create-event-modal .modal-title").html('Post a Job');
+                    $("#create-event-modal .text-prompt").html('Select Page to Post a Job');
+                    $("#create-event-modal .text-prompt-nocp").html('To post a Job, create a new Company Page');
+                    $(".type").val('job');
+                    $('#create-event-modal').modal('show');
+                }
+            }
 
-          $(".global-btn-login").click(function(e) {
-              var type = $(this).data("typepopup");
-              $.ajaxSetup({
-                  headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-              });
-              $.ajax({
-                  url: "https://crypto.jobs/ajax-login",
-                  type: 'POST',
-                  data: {
-                      email: $(".global-login-form input[name='email']").val(),
-                      password: $(".global-login-form input[name='password']").val()
-                  },
-                  success: function(data) {
-                      if (data.status == 1) {
-                          window.history.pushState(null, null, "?modal="+type);
-                          window.location.reload();
-                      } else {
-                          $(".global-login-form .error").text('');
-                          $.each(data.error, function(key, value) {
-                              $(".global-login-form .error-" + key).text(value);
-                          });
-                      }
-                  }
-              });
-              
-          });
+            $(".global-btn-login").click(function (e) {
+                var type = $(this).data("typepopup");
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "https://crypto.jobs/ajax-login",
+                    type: 'POST',
+                    data: {
+                        email: $(".global-login-form input[name='email']").val(),
+                        password: $(".global-login-form input[name='password']").val()
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            window.history.pushState(null, null, "?modal=" + type);
+                            window.location.reload();
+                        } else {
+                            $(".global-login-form .error").text('');
+                            $.each(data.error, function (key, value) {
+                                $(".global-login-form .error-" + key).text(value);
+                            });
+                        }
+                    }
+                });
 
-          $(".global-btn-register").click(function(e) {
-              var type = $(this).data("typepopup");
-              $.ajaxSetup({
-                  headers: {
-                      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                  }
-              });
-              $.ajax({
-                  url: "https://crypto.jobs/ajax-register",
-                  type: 'POST',
-                  data: {
-                      first_name: $(".global-signup-form input[name='first_name']").val(),
-                      last_name: $(".global-signup-form input[name='last_name']").val(),
-                      email: $(".global-signup-form input[name='email']").val(),
-                      password: $(".global-signup-form input[name='password']").val(),
-                      password_confirmation: $(".global-signup-form input[name='password_confirmation']").val()
-                  },
-                  success: function(data) {
-                      if (data.status == 1) {
-                          window.history.pushState(null, null, "?modal="+type);
-                          window.location.reload();
-                      } else {
-                          $(".global-signup-form .error").text('');
-                          $.each(data.error, function(key, value) {
-                              $(".global-signup-form .error-" + key).text(value);
-                          });
-                      }
-                  }
-              });
-              
-          });
+            });
 
-          $(".create-btn").click(function() {
-              var title = $(this).data("titlemodal");
-              var txtprompt = $(this).data("txtprompt");
-              var txtpromptnocp = $(this).data("txtpromptnocp");
-              var type = $(this).data("type");
+            $(".global-btn-register").click(function (e) {
+                var type = $(this).data("typepopup");
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "https://crypto.jobs/ajax-register",//todo remove
+                    type: 'POST',
+                    data: {
+                        first_name: $(".global-signup-form input[name='first_name']").val(),
+                        last_name: $(".global-signup-form input[name='last_name']").val(),
+                        email: $(".global-signup-form input[name='email']").val(),
+                        password: $(".global-signup-form input[name='password']").val(),
+                        password_confirmation: $(".global-signup-form input[name='password_confirmation']").val()
+                    },
+                    success: function (data) {
+                        if (data.status == 1) {
+                            window.history.pushState(null, null, "?modal=" + type);
+                            window.location.reload();
+                        } else {
+                            $(".global-signup-form .error").text('');
+                            $.each(data.error, function (key, value) {
+                                $(".global-signup-form .error-" + key).text(value);
+                            });
+                        }
+                    }
+                });
 
-              $("#create-event-modal .modal-title").html(title);
-              $("#create-event-modal .text-prompt").html(txtprompt);
-              $("#create-event-modal .text-prompt-nocp").html(txtpromptnocp);
-              $(".type").val(type);
-              $('#create-event-modal').modal('show');
-          });
+            });
 
-          $(".item-com").click(function() {
-              var companyName = $(this).data("companyname");
-              var companyId = $(this).data("companyid");
-              var companySlug = $(this).data("companyslug");
-              $('.lb-name').html(companyName);
-              $(".otp-company").val(companyId);
-              $(".otp-company-slug").val(companySlug);
-              $(".error-required").hide();
-          });
+            $(".create-btn").click(function () {
+                var title = $(this).data("titlemodal");
+                var txtprompt = $(this).data("txtprompt");
+                var txtpromptnocp = $(this).data("txtpromptnocp");
+                var type = $(this).data("type");
 
-          $(".confirm-create-link").click(function() {
-              var selectedCompany = $(".otp-company").val();
-              if (!selectedCompany) {
-                  $(".error-required").show();
-              } else {
-                  $(".error-required").hide();
-                  var type = $(".type").val();
-                  if (type == 'job') {
-                      window.location.href = "https://crypto.jobs/jobs/create?company=" + $(".otp-company-slug").val();
-                  }
-                  if (type == 'event') {
-                      window.location.href = "https://crypto.jobs/events/create?company=" + selectedCompany;
-                  }
-              }
-          });
-      });
-  </script>
-  <script type="27f71823a5a9157b3d1e2f5c-text/javascript">
+                $("#create-event-modal .modal-title").html(title);
+                $("#create-event-modal .text-prompt").html(txtprompt);
+                $("#create-event-modal .text-prompt-nocp").html(txtpromptnocp);
+                $(".type").val(type);
+                $('#create-event-modal').modal('show');
+            });
+
+            $(".item-com").click(function () {
+                var companyName = $(this).data("companyname");
+                var companyId = $(this).data("companyid");
+                var companySlug = $(this).data("companyslug");
+                $('.lb-name').html(companyName);
+                $(".otp-company").val(companyId);
+                $(".otp-company-slug").val(companySlug);
+                $(".error-required").hide();
+            });
+
+            $(".confirm-create-link").click(function () {
+                var selectedCompany = $(".otp-company").val();
+                if (!selectedCompany) {
+                    $(".error-required").show();
+                } else {
+                    $(".error-required").hide();
+                    var type = $(".type").val();
+                    if (type == 'job') {
+                        window.location.href = "https://crypto.jobs/jobs/create?company=" + $(".otp-company-slug").val();
+                    }
+                    if (type == 'event') {
+                        window.location.href = "https://crypto.jobs/events/create?company=" + selectedCompany;
+                    }
+                }
+            });
+        });
+    </script>
+    <script type="27f71823a5a9157b3d1e2f5c-text/javascript">
       $(document).ready(function() {
           $("#remoteOnly").on('click', function (e) {
               $("#location").val('Remote');
@@ -173,7 +175,7 @@
           });
       });
   </script>
-  <script src="/js/rocket-loader.min.js"></script>
+    <script src="/js/rocket-loader.min.js"></script>
 
 </body>
 

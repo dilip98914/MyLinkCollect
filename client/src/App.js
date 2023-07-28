@@ -2,6 +2,8 @@ import './App.css';
 import Routes from './Routes';
 import { ReactSlackChat } from 'react-slack-chat';
 import './store'
+//some other day this baby
+// import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (

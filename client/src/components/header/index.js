@@ -1,6 +1,8 @@
+import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function () {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -54,19 +56,32 @@ export default function () {
             <li>
               <span style={{ "padding": "10px" }} className="hidden-xs"></span>
             </li>
-            <li><NavLink
-              to={isAuthenticated == true ? '/profile' : '/login'}
-              className="post-job normal-btn">{isAuthenticated == true ? "Profile" : "Login"}</NavLink></li>
-            <li><NavLink to='/hire-talent' className="post-job">Hire Talent</NavLink></li>
             <li>
               {isAuthenticated == true ?
-                <button onClick={logoutUser} style={{
-                  margin: '5px auto',
-                  padding: '6px 40px',
-                }} className="btn btn-primary">
-                  Logout
-                </button>
+                <FontAwesomeIcon
+                  onClick={() => { history.push('/profile') }}
+                  style={{
+                    margin: '10px 10px',
+                    cursor: 'pointer'
+                  }}
+                  icon={faUser} color='#925090' size='2x' />
+                :
+                <NavLink
+                  to='/login'
+                  className="post-job normal-btn">Login</NavLink>
 
+              }
+            </li>
+            <li>
+              {isAuthenticated == true ?
+                <FontAwesomeIcon
+                  onClick={logoutUser}
+                  style={{
+                    margin: '10px 20px',
+                    cursor: 'pointer'
+                  }}
+                  size='2x'
+                  icon={faRightFromBracket} />
                 :
                 <NavLink to="/register" className="post-job normal-btn">{isAuthenticated == true ? "Logout" : "Register"}</NavLink>
               }
@@ -78,6 +93,7 @@ export default function () {
     <nav className="navbar navbar-default second-navbar-static-top">
       <ul className="navbar-center">
         <li><NavLink to="/" className="center-btn job-btn">💼 Jobs</NavLink></li>
+
         {/* <li><NavLink to="/companies" className="center-btn company-btn">🚀 Companies</NavLink></li> */}
         <li><NavLink to="/devs" className="center-btn talent-btn">👋🏻 Developers</NavLink></li>
         {/* <li><NavLink to="/events" className="center-btn event-btn">📅 Events</NavLink></li> */}
