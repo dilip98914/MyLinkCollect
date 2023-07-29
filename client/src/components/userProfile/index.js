@@ -143,12 +143,12 @@ export default function () {
                           }} onClick={() => {
                             const bal = 100;
                             alert(
-                              `Balance : ${bal} $`
+                              `Balance : ${user.balance} $`
                             )
                           }} icon={faWallet} /> &nbsp;<span style={{ fontSize: '25px' }} >$</span>
                         </div>
                         <div style={{ "float": "right" }}>
-                          <strong>Projects</strong> : (12/30)
+                          <strong>Projects</strong> : ({user.projectsPerformed}/{user.projectsCompleted})
                         </div>
                       </div>
 
@@ -161,24 +161,42 @@ export default function () {
                   <div class="form-group">
                     <label>Full Name</label>
                     <input type="text" class="form-control  big-font-inp"
-                      name="name" placeholder="Enter name" />
+                      name="fullName" placeholder="Enter name"
+                      onChange={handleChange}
+                      value={user.fullName}
+                    />
                   </div>
                   <i className="fa fa-twitter" aria-hidden="true" style={{ "color": "#1DA1F2;" }}></i>
 
                   <div class="form-group">
                     <label>Email</label>
                     <input type="email" class="form-control  big-font-inp"
-                      name="name" placeholder="Enter email" />
+                      name="email" placeholder="Enter email"
+
+                      onChange={handleChange}
+                      value={user.fullName}
+
+                    />
                   </div>
                   <div class="form-group">
                     <label>Change password</label>
                     <input type="password" class="form-control  big-font-inp"
-                      name="name" placeholder="Enter new password" />
+                      name="password" placeholder="Enter new password"
+                      onChange={handleChange}
+                      value={user.password}
+
+                    />
                   </div>
 
                   <div class="form-group">
                     <label>Short Summary</label>
-                    <textarea class="form-control" name="about_description" rows="7" placeholder="Describe your short summary?"></textarea>
+                    <textarea class="form-control" name="shortDescription"
+                      rows="7" placeholder="Describe your short summary?"
+                      onChange={handleChange}
+                      value={user.shortSummary}
+
+
+                    ></textarea>
                   </div>
                   <div class="form-group">
                     <label>Skills & Technologies</label>
@@ -195,7 +213,12 @@ export default function () {
                   </div>
                   <div class="form-group">
                     <label>Gender</label>
-                    <select class="form-control" name="is_remote">
+                    <select class="form-control" name="is_remote"
+
+                      onChange={handleChange}
+                      value={user.gender}
+
+                    >
                       <option value> -- Select an option -- </option>
                       <option value="MALE">MALE</option>
                       <option value="FEMALE">FEMALE</option>
@@ -204,7 +227,12 @@ export default function () {
 
                   <div class="form-group">
                     <label>Are you a developer or looking to hire?</label>
-                    <select class="form-control" name="is_remote">
+                    <select class="form-control" name="is_remote"
+
+                      onChange={handleChange}
+                      value={user.type}
+
+                    >
                       <option value> -- Select an option -- </option>
                       <option value="developer">Developer</option>
                       <option value="client">Company/Client</option>
@@ -214,27 +242,47 @@ export default function () {
                   <div class="form-group">
                     <label>City</label>
                     <input type="text" class="form-control" id="location" name="location"
-                      placeholder="City" />
+                      placeholder="City"
+
+                      onChange={handleChange}
+                      value={user.city}
+
+                    />
                   </div>
                   <div class="form-group">
                     <label>State</label>
                     <input type="text" class="form-control" id="location" name="location"
-                      placeholder="State" />
+                      placeholder="State"
+                      onChange={handleChange}
+                      value={user.state}
+
+                    />
                   </div>
                   <div class="form-group">
                     <label>Country</label>
                     <input type="text" class="form-control" id="location" name="location"
-                      placeholder="Country" />
+                      placeholder="Country"
+                      onChange={handleChange}
+                      value={user.country}
+                    />
                   </div>
                   <div class="form-group">
                     <label>Complete Address</label>
                     <input type="text" class="form-control" id="location" name="location"
-                      placeholder="Complete Address" />
+                      placeholder="Complete Address"
+                      onChange={handleChange}
+                      value={user.address}
+
+                    />
                   </div>
 
                   <div class="form-group">
                     <label>Hourly Rate &nbsp;($)</label>
-                    <input type="number" class="form-control num-inp" name="community_size" placeholder="Amount(e.g. 12$)" />
+                    <input type="number" class="form-control num-inp" name="community_size"
+                      onChange={handleChange}
+                      value={user.hourlyRate}
+
+                      placeholder="Amount(e.g. 12$)" />
                   </div>
 
                   {/* //resume */}
@@ -248,37 +296,55 @@ export default function () {
                   <div class="form-group">
                     <label>Date of Birth</label>
                     <input type="date" class="form-control num-inp"
-                      name="community_size" placeholder="DOB" />
+                      name="community_size" placeholder="DOB"
+
+                      onChange={handleChange}
+                      value={user.dob}
+
+                    />
                   </div>
                   {/* bank details */}
                   <div class="form-group">
                     <label>Account Number</label>
                     <input type="number" class="form-control num-inp"
                       name="community_size"
+                      onChange={handleChange}
+                      value={user.accountNumber}
+
                     />
                   </div>
                   <div class="form-group">
                     <label>IFSC Code</label>
                     <input type="text" class="form-control num-inp"
                       name="community_size"
+                      onChange={handleChange}
+                      value={user.ifscCode}
+
                     />
                   </div>
                   <div class="form-group">
                     <label>UPI ID-1</label>
                     <input type="text" class="form-control num-inp"
                       name="community_size"
+                      onChange={handleChange}
+                      value={user.upi_ids[0]}
+
                     />
                   </div>
                   <div class="form-group">
                     <label>UPI ID-2</label>
                     <input type="text" class="form-control num-inp"
                       name="community_size"
+                      onChange={handleChange}
+                      value={user.upi_ids[1]}
                     />
                   </div>
                   <div class="form-group">
                     <label>UPI ID-3</label>
                     <input type="text" class="form-control num-inp"
                       name="community_size"
+                      onChange={handleChange}
+                      value={user.upi_ids[2]}
                     />
                   </div>
 
