@@ -1,4 +1,4 @@
-import { faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faPhone, faRightFromBracket, faUser } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useHistory } from 'react-router-dom'
@@ -49,13 +49,33 @@ export default function () {
         <div className="collapse navbar-collapse" id="app-navbar-collapse">
           <ul className="nav navbar-nav visible-lg">
             <li>
-              <small>Hire Best Software developers blazing fast!</small>
+              {/* <small>Hire Best Software developers blazing fast!</small> */}
+              <span style={{ display: 'flex', textDecoration: 'underline' }}>
+
+                <FontAwesomeIcon bounce style={{
+                  margin: '20px  0px'
+                }} color='black' size='1x' icon={faPhone} />
+                <p
+                  style={{
+                    margin: '20px 10px',
+                    fontSize: '15px'
+                  }}
+                >+918920358065</p>
+              </span>
             </li>
           </ul>
           <ul className="nav navbar-nav navbar-right">
             <li>
               <span style={{ "padding": "10px" }} className="hidden-xs"></span>
             </li>
+            <li>
+              <NavLink to='/devs'>Hire on-Contract</NavLink>
+            </li>
+
+            <li>
+              <NavLink to='/'>Find Clients</NavLink>
+            </li>
+
             <li>
               {isAuthenticated == true ?
                 <FontAwesomeIcon
@@ -72,6 +92,8 @@ export default function () {
 
               }
             </li>
+
+
             <li>
               {isAuthenticated == true ?
                 <FontAwesomeIcon
@@ -90,15 +112,12 @@ export default function () {
         </div>
       </div>
     </nav>
-    <nav className="navbar navbar-default second-navbar-static-top">
+    {/* <nav className="navbar navbar-default second-navbar-static-top">
       <ul className="navbar-center">
         <li><NavLink to="/" className="center-btn job-btn">💼 Jobs</NavLink></li>
-
-        {/* <li><NavLink to="/companies" className="center-btn company-btn">🚀 Companies</NavLink></li> */}
         <li><NavLink to="/devs" className="center-btn talent-btn">👋🏻 Developers</NavLink></li>
-        {/* <li><NavLink to="/events" className="center-btn event-btn">📅 Events</NavLink></li> */}
       </ul>
-    </nav>
+    </nav> */}
 
   </>
 }
