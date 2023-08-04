@@ -1,0 +1,69 @@
+<%- include('../partials/header') %>
+<%- include('../partials/navbar.ejs') %>
+<div class="login-inner loginWrp">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+      </div>
+      <div class="col-md-6">
+        <div id="alreadtstt" class="login">
+          <div class="formint conForm">
+            <form>
+              <div class="input-wrap">
+                <label class="input-group-addon">Email</label>
+                <input type="text" autocomplete="email" onchange="fieldcheck('emailerror','email')" onkeyup="fieldcheck('emailerror','email')" onfocus="fieldcheck('emailerror','email')" placeholder="Enter Email" class="form-control" id="email">
+                <small class="text-danger text-error" id="emailerror">Email is required
+                </small>
+              </div>
+              <div class="input-wrap">
+                <label class="input-group-addon">Password
+                  <span>
+                    <a href="/forgot-password">Forgot Password?</a>
+                  </span>
+                </label>
+                <input type="password" autocomplete="password" placeholder="Password" class="form-control" id="password" onchange="fieldcheck('passworderror','password')" onkeyup="fieldcheck('passworderror','password')" onfocus="fieldcheck('passworderror','password')">
+                <div class="toggle-password" onclick="changepwd()" rel="hide">
+                  <div class="view-pwd imagesrc" src-img="/images/icon/view-pwd.png" rel="prepend" widthi="24" heighti="24" alt="view-pwd"> </div>
+                  <div class="hide-pwd imagesrc" src-img="/images/icon/hide-pwd.png" rel="prepend" widthi="24" heighti="24" alt="hide-pwd"> </div>
+                </div>
+                <small class="text-danger text-error" id="passworderror">Password is required</small>
+              </div>
+              <div class="sub-btn">
+                <button type="button" id="loginbtn" disabled="disabled" onclick="loginSubmit()" class="login-btn">
+                  <span id="loginstt"> Login </span>
+                  <span id="loginstt2" style="display: none;"> Please Wait
+                    <img src="images/loginloader.gif" /> </span>
+                </button>
+              </div>
+              <div class="google-login text-center">
+                <div>
+                  <a href="https://accounts.google.com/o/oauth2/v2/auth?response_type=code&amp;redirect_uri=https%3A%2F%2Fwww.onbenchmark.com%2Fget-profile-login&amp;scope=profile%20email&amp;client_id=153659098725-0441tp8ig43u4ga74lkuhfqnusadst37.apps.googleusercontent.com" class="imagesrc" src-img="images/gmailsignin.jpg" rel="prepend" alt="login by gmail" widthi="235px" heighti="40px"> </a>
+                </div>
+              </div>
+              <div class="newuser">
+                New User?
+                <a href="register.html">&nbsp;Register Here</a>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div id="alreadtstt2" class="login" style="display: none;">
+          <div class="formint conForm text-center">
+            <button type="button" class="btn btn-green" onclick="logoutotherdevice()">
+              <span> Reset other login </span>
+              <span id="loginstt" style="display: none;">Please Wait...
+                <img src="/images/loginloader.gif" /> </span>
+            </button>
+            <br>
+            <br>
+            <button type="button" class="btn btn-gray" onclick="cancellogin()"> Cancel</button>
+          </div>
+        </div>
+        <br>
+      </div>
+      <div class="col-md-3"></div>
+    </div>
+  </div>
+</div>
+<%- include('../partials/footer.ejs') %>
+<%- include('../partials/bottom.ejs') %>
