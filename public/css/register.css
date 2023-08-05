@@ -1,0 +1,31 @@
+.login-inner {
+  padding: 0 0 30px 3px
+}
+
+.heading-register {
+  padding: 0 0 15px 0;
+  font-size: 30px;
+  color: #000
+}
+
+.listWrpService-reg {
+  padding: 20px;
+  background: linear-gradient(to right, #0294c1, #35ceff);
+  margin: 15px 0;
+  box-shadow: 0 0 3px 0 #5f5a5a;
+  -moz-box-shadow: 0 0 3px 0 #5f5a5a;
+  -webkit-box-shadow: 0 0 3px 0 #5f5a5a
+}
+
+.white {
+  color: #fff !important
+}
+
+.featured-wrap p {
+  font-weight: 400;
+  margin-bottom: 0
+}
+
+.heading-register span {
+  color: #00aade
+}

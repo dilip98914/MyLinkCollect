@@ -4,8 +4,8 @@
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/owl.carousel.min.js"></script>
 <script>
-  $(document).ready(function () {
-    $('#nav-toggle').click(function () {
+  $(document).ready(function() {
+    $('#nav-toggle').click(function() {
       $("#nav-toggle,body,header nav").toggleClass('active');
     });
   });
@@ -60,6 +60,7 @@
     },
     navText: ["<div class='left-arrow'><</div>", "<div class='right-arrow'>></div>"],
   });
+
   function searchdiv(ids) {
     if (ids == "findJobsTab") {
       // $("#findJobsTab").addClass("active in");
@@ -69,8 +70,12 @@
       $("#tab1").addClass("active");
       $("#tab2").removeClass("active");
 
-      $(".jobsdiv").css({ "display": "block" });
-      $(".benchsdiv").css({ "display": "none" });
+      $(".jobsdiv").css({
+        "display": "block"
+      });
+      $(".benchsdiv").css({
+        "display": "none"
+      });
 
       $("#skills").val("");
       $("#locations").val("");
@@ -83,12 +88,17 @@
       $("#tab2").addClass("active");
       $("#tab1").removeClass("active");
 
-      $(".jobsdiv").css({ "display": "none" });
-      $(".benchsdiv").css({ "display": "block" });
+      $(".jobsdiv").css({
+        "display": "none"
+      });
+      $(".benchsdiv").css({
+        "display": "block"
+      });
       $("#skills").val("");
       $("#locations").val("");
     }
   }
+
   function stopplay(val) {
     if (val == 1) {
       $('#movie1').get(0).pause();
@@ -98,9 +108,13 @@
       $('#movie2').get(0).load();
     }
   }
+
   function playvideo(val) {
     if (val == 1) {
-      $('#businessModal').modal({ backdrop: 'static', keyboard: false });
+      $('#businessModal').modal({
+        backdrop: 'static',
+        keyboard: false
+      });
       var htmlv1 = '<video id="movie1" width="100%"  controls>';
       htmlv1 += '<source src="https://www.onbenchmark.com/ssrsystem/video/home.mp4" type="video/mp4">';
       htmlv1 += '<source src="movie.ogg" type="video/ogg">';
@@ -117,7 +131,10 @@
       $('#movie2').get(0).pause();
       $('#movie2').get(0).load();
     } else {
-      $('#freelancerModal').modal({ backdrop: 'static', keyboard: false });
+      $('#freelancerModal').modal({
+        backdrop: 'static',
+        keyboard: false
+      });
       var htmlv1 = '<video id="movie1" width="100%"  controls>';
       htmlv1 += '<source src="https://www.onbenchmark.com/ssrsystem/video/home.mp4" type="video/mp4">';
       htmlv1 += '<source src="movie.ogg" type="video/ogg">';
@@ -135,7 +152,10 @@
       $('#movie1').get(0).load();
     }
   }
-  window.onscroll = function () { scrollFunction() };
+  window.onscroll = function() {
+    scrollFunction()
+  };
+
   function scrollFunction() {
     if (document.body.scrollTop > 65 || document.documentElement.scrollTop > 65) {
       $("header").addClass("fixed-header");
@@ -148,16 +168,25 @@
 </script>
 <script>
   function get_city(val) {
-    var filter = { "city_name": { $regex: '^' + val, "$options": "i" } };
+    var filter = {
+      "city_name": {
+        $regex: '^' + val,
+        "$options": "i"
+      }
+    };
     var baseurl = "index.html";
     var url = baseurl + "notoken/city?filter=";
-    $(".city_loader").css({ "display": "block" });
+    $(".city_loader").css({
+      "display": "block"
+    });
     $.ajax({
       type: "GET",
       url: url + JSON.stringify(filter),
-      success: function (res) {
+      success: function(res) {
         var cdata = res.data;
-        $(".city_loader").css({ "display": "none" });
+        $(".city_loader").css({
+          "display": "none"
+        });
 
         if (cdata.length > 0) {
           html = '<span class="closecity" onclick="closecity()">X</span>';
@@ -166,45 +195,66 @@
             html += cdata[i].city_name + '(' + cdata[i].country_id.country_name + ')';
             html += '</a>';
           }
-          $(".locationlist").css({ "display": "block" }).html(html);
+          $(".locationlist").css({
+            "display": "block"
+          }).html(html);
         } else {
-          $(".locationlist").css({ "display": "none" });
+          $(".locationlist").css({
+            "display": "none"
+          });
         }
       },
-      error: function (response) {
-        $(".city_loader").css({ "display": "none" });
+      error: function(response) {
+        $(".city_loader").css({
+          "display": "none"
+        });
       }
     });
   }
+
   function setvalue(_id, i) {
     var city_name = $("#" + _id).attr('rel');
     $("#locations").val(city_name);
-    $(".locationlist").css({ "display": "none" })
+    $(".locationlist").css({
+      "display": "none"
+    })
   }
+
   function closecity() {
-    $(".locationlist").css({ "display": "none" });
+    $(".locationlist").css({
+      "display": "none"
+    });
   }
 
   function getSkill(valdata) {
     var strc = valdata.length;
     if (valdata[strc - 1] == ',') {
-      $(".skilllist").css({ "display": "none" });
+      $(".skilllist").css({
+        "display": "none"
+      });
       return false;
     }
-    $(".skilllist").css({ "display": "block" });
+    $(".skilllist").css({
+      "display": "block"
+    });
     var arr = valdata.split(',');
     var val = arr[arr.length - 1];
     var strtext = '';
-    $(".skilltext").each(function () {
+    $(".skilltext").each(function() {
       strtext = '';
       strtext = $(this).text().toLowerCase();
       if (strtext.search(val.toLowerCase()) != -1) {
-        $(this).css({ "display": "block" });
+        $(this).css({
+          "display": "block"
+        });
       } else {
-        $(this).css({ "display": "none" });
+        $(this).css({
+          "display": "none"
+        });
       }
     });
   }
+
   function setskilltext(val) {
     if (val) {
       var arr = val.split(',');
@@ -214,6 +264,7 @@
       }
     }
   }
+
   function setskill(valdata) {
     var vald = $("#skills").val();
     var arr = [];
@@ -222,16 +273,22 @@
     if (vald) {
       arr[arr.length - 1] = valdata;
       $("#skills").val(arr.toString());
-      $(".skilllist").css({ "display": "none" });
+      $(".skilllist").css({
+        "display": "none"
+      });
     } else {
       $("#skills").val(valdata);
-      $(".skilllist").css({ "display": "none" });
+      $(".skilllist").css({
+        "display": "none"
+      });
     }
   }
-  $("body").click(function (e) {
+  $("body").click(function(e) {
     console.log(e.target.className);
     if (e.target.className != "form-control salectchanged") {
-      $("#myDropdown").css({ "display": "none" });
+      $("#myDropdown").css({
+        "display": "none"
+      });
     }
   });
 
@@ -239,7 +296,7 @@
     var baseurl = "index.html";
     var searchType = "";
     if (val == 1) {
-      var stype = $("input[name='jobs']:checked").val();// parseInt($("#stype").val());
+      var stype = $("input[name='jobs']:checked").val(); // parseInt($("#stype").val());
       var skills = $("#skills").val() ? $("#skills").val() : '';
       var locations = $("#locations").val() ? $("#locations").val() : '';
       // console.log(stype);
@@ -248,7 +305,9 @@
       if (!skills) {
 
         $(".error-text").text("Please enter skills or location to search relevant jobs");
-        $(".error-text").css({ "display": "block" });
+        $(".error-text").css({
+          "display": "block"
+        });
         return false;
       }
       if (stype == "1") {
@@ -273,7 +332,7 @@
       //window.location = url;
     }
     if (val == 2) {
-      var stype = $("input[name='talent']:checked").val();// parseInt($("#stype").val());
+      var stype = $("input[name='talent']:checked").val(); // parseInt($("#stype").val());
       var skills = $("#skills").val() ? $("#skills").val() : '';
       var locations = $("#locations").val() ? $("#locations").val() : '';
       // console.log(stype);
@@ -282,7 +341,9 @@
       if (!skills) {
 
         $(".error-text").text("Please enter skills or location to search relevant Talent");
-        $(".error-text").css({ "display": "block" });
+        $(".error-text").css({
+          "display": "block"
+        });
         return false;
       }
       if (stype == "1") {
@@ -316,7 +377,7 @@
       "type": "POST",
       "url": baseurl + "auth/homesearch",
       "data": postdata,
-      success: function (res) {
+      success: function(res) {
         if (res.confirmation == 'success') {
 
           window.location = url;
@@ -324,18 +385,22 @@
           window.location = url;
         }
       },
-      error: function (response) {
+      error: function(response) {
         window.location = url;
       }
     });
   }
 
-  $('.count').each(function () {
+  $('.count').each(function() {
     var $this = $(this);
-    jQuery({ Counter: 0 }).animate({ Counter: $this.attr('data-stop') }, {
+    jQuery({
+      Counter: 0
+    }).animate({
+      Counter: $this.attr('data-stop')
+    }, {
       duration: 3000,
       easing: 'swing',
-      step: function (now) {
+      step: function(now) {
         $this.text(Math.ceil(now));
       }
     });
@@ -343,38 +408,42 @@
 </script>
 <script>
   jQuery.event.special.touchstart = {
-    setup: function (_, ns, handle) {
+    setup: function(_, ns, handle) {
       if (ns.includes("noPreventDefault")) {
-        this.addEventListener("touchstart", handle, { passive: false });
+        this.addEventListener("touchstart", handle, {
+          passive: false
+        });
       } else {
-        this.addEventListener("touchstart", handle, { passive: true });
+        this.addEventListener("touchstart", handle, {
+          passive: true
+        });
       }
     }
   };
   jQuery.event.special.touchmove = {
-    setup: function (_, ns, handle) {
+    setup: function(_, ns, handle) {
       if (ns.includes("noPreventDefault")) {
-        this.addEventListener("touchmove", handle, { passive: false });
+        this.addEventListener("touchmove", handle, {
+          passive: false
+        });
       } else {
-        this.addEventListener("touchmove", handle, { passive: true });
+        this.addEventListener("touchmove", handle, {
+          passive: true
+        });
       }
     }
   };
-
-
-
-
 </script>
 <div id="myModal" class="modal2">
-  <div class="modal2-content"><span class="close2" onclick="close_btn_offer();">&times;</span><a
-      href="pricing-table.html" class="img-content-model"></a></div>
+  <div class="modal2-content"><span class="close2" onclick="close_btn_offer();">&times;</span><a href="/pricing-table" class="img-content-model"></a></div>
 </div>
 <script>
-
   function close_btn_offer() {
-    $("#myModal").css({ "display": "none" });
+    $("#myModal").css({
+      "display": "none"
+    });
   }
-  $(document).ready(function () {
+  $(document).ready(function() {
     // Check if the popup was displayed today and how many times
     const popupShownToday = localStorage.getItem('popupShownToday');
     const popupShownCount = parseInt(localStorage.getItem('popupShownCount')) || 0;
@@ -390,7 +459,9 @@
     if (popupShownCount < 4) {
       //alert(popupShownCount);
       // Show the popup
-      $("#myModal").css({ "display": "block" });
+      $("#myModal").css({
+        "display": "block"
+      });
 
       // Increment the popup count for the current day
       localStorage.setItem('popupShownCount', (popupShownCount + 1).toString());
@@ -407,8 +478,6 @@
 <img class="img-responsive" src="/ssrsystem/images/offer-50-15.jpeg" style="border: 1px solid #8BC34A;"  
 alt="OnBenchMark Logo" width="100%"> `;
   $(".img-content-model").html(htmldiv);
-
-
 </script>
 </body>
 

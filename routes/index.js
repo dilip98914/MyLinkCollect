@@ -3,7 +3,7 @@ const API_VERSION = 'api/v1'
 const profileRoutes = require('./profile')
 const userRoutes = require('./user')
 const projectRoutes = require('./project')
-const homeRoutes = require('./home')
+const staticRoutes = require('./static')
 
 const { authenticateSession } = require('../middlewares/auth')
 
@@ -12,5 +12,5 @@ module.exports = (app) => {
   app.use(`/${API_VERSION}/profile`, authenticateSession, profileRoutes)
   app.use(`/${API_VERSION}/user`, userRoutes)
   app.use(`/${API_VERSION}/project`, projectRoutes)
-  app.use(`/`, homeRoutes)
+  app.use(`/`, staticRoutes)
 }

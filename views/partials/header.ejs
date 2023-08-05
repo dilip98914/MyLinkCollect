@@ -19,18 +19,63 @@
   <meta property="og:image:height" content="120">
   <meta property="og:url" content="index.html">
 
+  <% if(styles.length>0 && styles.includes('globalbench')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/globalBench.css">
+  <% } %>
+  <% if(styles.length>0 && styles.includes('bench-detail')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/bench-detail.css">
+  <% } %>
+
+  <% if(styles.length>0 && styles.includes('loader')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/loader.css">
+  <% } %>
+
+  <% if(styles.length>0 && styles.includes('contract-jobs')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/contract-jobs.css">
+  <% } %>
+
+  <% if(styles.length>0 && styles.includes('deploy-bench')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/deploy-bench.css">
+  <% } %>
+
+  <% if(styles.length>0 && styles.includes('register')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/register.css">
+  <% } %>
+
+  <% if(styles.length>0 && styles.includes('blog')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/blog.css">
+  <% } %>
+
+  <% if(styles.length>0 && styles.includes('blogview')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/blogview.css">
+  <% } %>
+
+
   <% if(styles.length>0 && styles.includes('bootstrap')){ %>
   <link rel="stylesheet" href="/css/bootstrap.min.css">
   <% } %>
   <% if(styles.length>0 && styles.includes('global')){ %>
   <link rel="stylesheet" type='text/css' href="/css/global30f4.css?v=3">
   <% } %>
+
   <% if(styles.length>0 && styles.includes('freelancer-register')){ %>
   <link rel="stylesheet" type='text/css' href="/css/freelancer-register.css">
   <% } %>
+
+  <% if(styles.length>0 && styles.includes('tableb6f5')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/tableb6f5.css">
+  <% } %>
+
+
   <% if(styles.length>0 && styles.includes('testimonials')){ %>
   <link rel="stylesheet" type='text/css' href="/css/testimonials.css">
   <% } %>
+
+  <% if(styles.length>0 && styles.includes('hire-bench')){ %>
+  <link rel="stylesheet" type='text/css' href="/css/hire-bench.css">
+  <% } %>
+
+
 
   <% if(styles.length>0 && styles.includes('toaster')){ %>
   <link rel="stylesheet" type='text/css' href="/css/toastr.min.css">

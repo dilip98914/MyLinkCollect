@@ -1,0 +1,169 @@
+.inner-content {
+  padding: 0 0 20px 0;
+  background: #f3f2f2
+}
+
+.breadcrumb {
+  padding: 8px 15px;
+  margin: 10px 0 0 0;
+  list-style: none;
+  background-color: #f5f5f5;
+  border-radius: 4px
+}
+
+.breadcrumb>li {
+  display: inline-block
+}
+
+.breadcrumb>.active {
+  color: #777
+}
+
+.breadcrumb>li {
+  display: inline-block
+}
+
+.listWrpService2 {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  margin: 10px 0
+}
+
+.other-des {
+  padding: 15px 15px 15px 15px
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem
+}
+
+.pad-b-15 {
+  padding-bottom: 15px
+}
+
+.details-panel {
+  padding: 15px 15px 15px 15px;
+  border-top: 1px solid #38c13e;
+  margin: 0
+}
+
+.view-title {
+  font-size: 15px;
+  padding: 10px 10px 10px 10px;
+  font-weight: 600;
+  background: #f9f9f9;
+  margin: 0 0 10px 0;
+  border-bottom: 1px solid #f3f2f2
+}
+
+.skill-list {
+  padding: 10px 10px 20px 10px
+}
+
+span.skill-list {
+  background: #d4d6d3;
+  padding: 5px 5px;
+  margin-left: 11px;
+  display: inline-block;
+  margin-top: 5px;
+  border-radius: 10px
+}
+
+.view-details {
+  padding: 0 0 10px 10px;
+  overflow-x: auto
+}
+
+.gaadiex-list {
+  padding: 0 15px;
+  height: 400px;
+  overflow-y: auto
+}
+
+.rating-block {
+  background-color: #fafafa;
+  border: 1px solid #efefef;
+  padding: 15px 15px 20px 15px;
+  border-radius: 3px
+}
+
+.padding-bottom-7 {
+  padding-bottom: 7px
+}
+
+.bold {
+  font-weight: 700
+}
+
+.well2 {
+  background: #fafafa;
+  margin: 15px 0;
+  padding: 15px 15px 0 15px
+}
+
+.font-16 {
+  font-size: 16px
+}
+
+.progress {
+  background-image: linear-gradient(to bottom, #ebebeb 0, #f5f5f5 100%);
+  background-repeat: repeat-x
+}
+
+.progress,
+.progress>.progress-bar {
+  -webkit-box-shadow: none;
+  box-shadow: none
+}
+
+.progress,
+.progress .progress-bar,
+.progress>.progress-bar,
+.progress>.progress-bar .progress-bar {
+  border-radius: 1px
+}
+
+.listWrpService2 {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  margin: 10px 0;
+  box-shadow: 0 7px 14px 0 rgb(65 69 88 / 10%), 0 3px 6px 0 rgb(0 0 0 / 7%)
+}
+
+.title-can {
+  padding: 15px 15px 15px 15px;
+  border-bottom: 1px solid #cecdcd;
+  margin: 0 0 13px 0;
+  font-size: 18px
+}
+
+.gaadiex-list {
+  padding: 0 15px;
+  height: 400px;
+  overflow-y: auto
+}
+
+.freelist {
+  padding: 15px 0;
+  border-bottom: 1px solid #c5bfbf
+}
+
+.user-name {
+  font-size: 15px;
+  color: #737475;
+  font-weight: 600
+}
+
+.color-gray {
+  color: #7e7f80
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px
+}
+
+.listImg {
+  width: 50px;
+  height: 50px
+}

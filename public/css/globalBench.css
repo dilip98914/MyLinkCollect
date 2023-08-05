@@ -457,7 +457,7 @@ footer .linkBox ul li a {
   line-height: 55px
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
   header {
     overflow: inherit
   }
@@ -599,7 +599,7 @@ footer .linkBox ul li a {
   }
 }
 
-@media only screen and (max-width:540px) {
+@media only screen and (max-width: 540px) {
   .owlSlider .owl-carousel {
     padding: 0 48px
   }
@@ -657,7 +657,7 @@ footer .linkBox ul li a {
   border: #242222 solid 1px
 }
 
-@media (min-width:992px) {
+@media (min-width: 992px) {
   .modal-lg {
     width: 900px
   }
@@ -683,7 +683,7 @@ footer .linkBox ul li a {
   cursor: pointer
 }
 
-@media only screen and (max-width:600px) {
+@media only screen and (max-width: 600px) {
   .img-content-model {
     width: 260px;
     height: 155px
@@ -711,7 +711,7 @@ footer .linkBox ul li a {
   }
 }
 
-@media only screen and (min-width:600px) {
+@media only screen and (min-width: 600px) {
   .modal2-content {
     background-color: #fefefe;
     margin: 3% auto;
@@ -739,7 +739,7 @@ footer .linkBox ul li a {
   }
 }
 
-@media only screen and (min-width:768px) {
+@media only screen and (min-width: 768px) {
   .modal2-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -767,7 +767,7 @@ footer .linkBox ul li a {
   }
 }
 
-@media only screen and (min-width:992px) {
+@media only screen and (min-width: 992px) {
   .modal2-content {
     background-color: #fefefe;
     margin: 3% auto;
@@ -795,7 +795,7 @@ footer .linkBox ul li a {
   }
 }
 
-@media only screen and (min-width:1200px) {
+@media only screen and (min-width: 1200px) {
   .modal2-content {
     background-color: #fefefe;
     margin: 3% auto;
