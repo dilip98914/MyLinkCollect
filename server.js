@@ -1,15 +1,10 @@
 'use strict';
 require('dotenv').config({ path: './variables.env' });
-
 const express = require('express');
-
-
-
 const app = express();
 const compression = require('compression'),
   device = require('express-device'),
   helmet = require('helmet');
-
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const cors = require('cors');
@@ -44,10 +39,8 @@ app.use(session({
 
 
 //todo:sitemap route
-
+// https://www.xml-sitemaps.com/
 // app.disable('x-powered-by')
-
-
 
 require('./routes')(app)
 
