@@ -14,8 +14,10 @@ const path = require('path')
 const config = require('./config/key');
 const session = require('express-session')
 const mongoose = require('mongoose');
+app.use(express.static(path.join(process.cwd(), '/public')));
+
 mongoose.connect(config.mongoURI, { useNewUrlParser: true }).then(() => {
-  console.log('DB connected!');
+  console.log('DB connected!', config.db);
 }).catch(err => console.log(err));
 
 app.use(bodyParser.json({ limit: "50mb", strict: false }));
@@ -30,7 +32,6 @@ app.set('view engine', 'ejs')
 
 app.use(express.json({}));
 logger.debug(process.env.JWT_SECRET)
-app.use(express.static(path.join(process.cwd(), '/public')));
 app.use(session({
   secret: process.env.session_secret,
   resave: true,
