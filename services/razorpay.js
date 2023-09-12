@@ -14,7 +14,7 @@ const fetchPaymentById = async (id) => {
     //maybe some data manipulation
     return payment;
   } catch (err) {
-    console.error(err)
+    console.error("razoooooooooooooooooo")
     return {
       error: true,
       meta: err.response.data
@@ -28,7 +28,7 @@ const fetchPayments = async (from, to) => {
       from, to
     })
   } catch (err) {
-    console.error(err)
+    console.error("razoooooooooooooooooo")
     return {
       error: true,
       meta: err.response.data
@@ -57,7 +57,7 @@ const createPayment = async (amount, txn_type, modeType) => {
     await instance.orders.create(options);
     return txn
   } catch (err) {
-    console.error(err)
+    console.error("razoooooooooooooooooo")
     return {
       error: true,
       meta: err.response.data

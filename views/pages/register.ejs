@@ -1,0 +1,32 @@
+<%- include('../partials/header') %>
+<div class="container mt-5">
+  <div class="row">
+    <% if(hasErrors){ %>
+    <div class="alert alert-danger">
+      <% for(let i=0;i<messages.length;i++){ %>
+      <p><%=messages[i] %></p>
+      <%}%>
+      </div>
+      <%}%>
+
+      <div class="col-md-8 offset-2">
+        <form action="/user/register" method="POST">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email address</label>
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required autofocus>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Password</label>
+            <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <button type="submit" class="btn btn-danger">Register</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+  <%- include('../partials/bottom') %>

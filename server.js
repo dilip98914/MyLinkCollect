@@ -6,38 +6,65 @@ const compression = require('compression'),
   device = require('express-device'),
   helmet = require('helmet');
 const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
 const cors = require('cors');
 const logger = require('./helpers/logger')
 const chalk = require('ansi-colors');
 const path = require('path')
 const config = require('./config/key');
-const session = require('express-session')
 const mongoose = require('mongoose');
+const passport = require('passport')
+const User = require('./models/user')
+var cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const validator = require('express-validator');
+const session = require('express-session');
+const sqlite = require("better-sqlite3");
+var fs = require('fs');
+var util = require('util');
+var log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
+var log_stdout = process.stdout;
+
+// console.log = function (d) { //
+//   log_file.write(util.format(d) + '\n');
+//   log_stdout.write(util.format(d) + '\n');
+// };
+
+console.error = function (d) { //
+  log_file.write(util.format(d) + '\n');
+  log_stdout.write(util.format(d) + '\n');
+};
+
 app.use(express.static(path.join(process.cwd(), '/public')));
 
 mongoose.connect(config.mongoURI, { useNewUrlParser: true }).then(() => {
-  console.log('DB connected!', config.db);
-}).catch(err => console.log(err));
+  console.log('DB connected!');
+}).catch(err =>
+  console.log("err->>>>>>>>>>>>>>>>>>>>..")
+);
+
+require('./middlewares/initPassport')
 
 app.use(bodyParser.json({ limit: "50mb", strict: false }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
-app.use(expressValidator());
+app.use(validator());
+app.use(cookieParser());
+//todo add mongo store 
+app.use(require("express-session")({
+  secret: "THIS IS SECRET",
+  resave: false,
+  saveUninitialized: false
+}));
+
+app.use(flash())
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(cors());
 app.use(device.capture())
 app.use(helmet());
 app.use(compression({ level: 9 }))
 
 app.set('view engine', 'ejs')
-
-app.use(express.json({}));
-logger.debug(process.env.JWT_SECRET)
-app.use(session({
-  secret: process.env.session_secret,
-  resave: true,
-  saveUninitialized: false
-}))
-
 
 //todo:sitemap route
 // https://www.xml-sitemaps.com/
