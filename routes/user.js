@@ -3,14 +3,22 @@ const router = express.Router()
 const passport = require('passport')
 var csrf = require('csurf');
 
-const { isLoggedIn, notLoggedIn } = require('../middlewares/auth')
+const { isLoggedIn, notLoggedIn } = require('../middlewares/auth');
+const Collection = require('../models/collection');
 
 const csrfProtection = csrf();
 router.use(csrfProtection);
 
 router.get('/dashboard', isLoggedIn, async (req, res, next) => {
+  console.log('aaaaaaa', req.user.id)
+  const collections = await Collection.find({
+    user_id: req.user.id
+  })
+
   res.render('pages/dashboard', {
-    title: 'dashboard'
+    title: 'dashboard',
+    collections,
+    // isData: collections.length > 0
   })
 })
 

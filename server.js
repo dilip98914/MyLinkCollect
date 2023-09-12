@@ -18,7 +18,6 @@ var cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const validator = require('express-validator');
 const session = require('express-session');
-const sqlite = require("better-sqlite3");
 var fs = require('fs');
 var util = require('util');
 var log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });

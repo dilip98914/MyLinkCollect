@@ -24,7 +24,8 @@ schema.methods.encryptPassword = function (password) {
 };
 
 schema.methods.validPassword = function (password) {
-  return bcrypt.compareSync(password, this.password);
+  return password == this.password
+  // return bcrypt.compareSync(password, this.password);
 };
 
 
