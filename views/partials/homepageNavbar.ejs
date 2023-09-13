@@ -28,9 +28,21 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Contact Us</a>
         </li>
+        <% if(!login){ %>
+        <li class="nav-item ms-5">
+          <a class="btn btn-primary" href="/user/register">Register</a>
+        </li>
         <li class="nav-item ms-5">
           <a class="btn btn-outline-danger" href="/user/login">Login</a>
         </li>
+        <%}else{%>
+        <li class="nav-item ms-5">
+          <a class="btn btn-primary" href="/user/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item ms-3">
+          <a class="btn btn-outline-danger" href="/user/logout">Logout</a>
+        </li>
+        <%}%>
         <!-- <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             User

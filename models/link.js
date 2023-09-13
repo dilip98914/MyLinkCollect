@@ -7,6 +7,12 @@ const schema = mongoose.Schema({
     type: String,
     required: true
   },
+  source: {
+    type: String,
+  },
+  collection_id: {
+    type: String,
+  },
   isBookMarked: {
     type: Boolean,
     default: false

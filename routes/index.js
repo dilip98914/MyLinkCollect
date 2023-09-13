@@ -1,6 +1,6 @@
 const homeRoutes = require('./home')
 const userRoutes = require('./user')
-const collectionRoutes = require('./link_collection')
+const collectionRoutes = require('./collection')
 
 module.exports = (app) => {
   app.use(`/user`, userRoutes)

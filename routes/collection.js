@@ -2,12 +2,15 @@ const express = require('express');
 const Collection = require('../models/collection');
 const router = express.Router()
 const upload = require('../middlewares/multer')
-const mongoose = require('mongoose')
-router.post('/', upload.single('image_upload'), async (req, res, next) => {
+const mongoose = require('mongoose');
+const link = require('../models/link');
+const { isLoggedIn, notLoggedIn } = require('../middlewares/auth');
+var cuid = require('cuid');
+
+router.post('/', isLoggedIn, upload.single('image_upload'), async (req, res, next) => {
   try {
     let { title, description, isPrivate } = req.body;
     if (!isPrivate) isPrivate = false;
-
     /*
     https://medium.com/@kavitanambissan/uploading-and-retrieving-a-file-from-gridfs-using-multer-958dfc9255e8
 
@@ -37,14 +40,23 @@ router.post('/', upload.single('image_upload'), async (req, res, next) => {
     */
     if (req.file) {
       //later
+      return res.send('file upload not implemented!')
+      await Collection.create({
+        title,
+        description: description || '',
+        isPrivate: isPrivate,
+        user_id: req.user.id,
+      })
+
     } else {
-      const collection = await Collection.create({
+      await Collection.create({
+        id: cuid(),
         title,
         description: description || '',
         isPrivate: isPrivate,
         user_id: req.user.id
       })
-      res.redirect('/user/dashboard')
+      return res.redirect('/user/dashboard')
       // res.status(200).send({
       //   message: 'Successfully added collection!',
       //   success: true,
@@ -61,7 +73,7 @@ router.post('/', upload.single('image_upload'), async (req, res, next) => {
   }
 })
 
-router.get('/', async (req, res, next) => {
+router.get('/add', isLoggedIn, async (req, res, next) => {
   const messages = req.flash('error');
   res.render('pages/addCollection', {
     messages: messages,
@@ -70,8 +82,64 @@ router.get('/', async (req, res, next) => {
   })
 })
 
+router.post('/link/edit', isLoggedIn, async (req, res, next) => {
+  try {
+    await link.findOneAndUpdate({ id: req.body.link_id }, { value: req.body.link })
+    return res.redirect(`/collection/${req.body.collection_id}`)
+  } catch (err) {
+    console.error(err)
+    // todo flash error message
+    return res.redirect(`/collection/${req.body.collection_id}`)
+  }
+})
 
 
+router.post('/link', isLoggedIn, async (req, res, next) => {
+  try {
+
+    await link.create({
+      id: cuid(),
+      value: req.body.link,
+      source: 'google.com',
+      collection_id: req.body.collection_id
+    })
+    return res.redirect(`/collection/${req.body.collection_id}`)
+  } catch (err) {
+    console.error(err)
+    // todo flash error message
+    return res.redirect(`/collection/${req.body.collection_id}`)
+  }
+})
+
+router.get('/:id', async (req, res, next) => {
+  const messages = req.flash('error');
+  const collection = await Collection.findOne({
+    id: req.params.id
+  })
+  // await link.create({
+  //   value: 'https://www.youtube.com/watch?v=NSXK3fBDD0c&list=RDGMEM2j3yRsqu_nuzRLnHd2bMVA&start_radio=1&rv=a3B2glol4IU',
+  //   source: 'youtube.com',
+  //   collection_id: collection.id
+  // })
+  // await link.create({
+  //   value: 'https://askubuntu.com/questions/787023/bluetooth-not-working-on-ubuntu-16-04-lts',
+  //   source: 'https://askubuntu.com',
+  //   collection_id: collection.id
+  // })
+
+  const linksAssociated = await link.find({
+    collection_id: collection.id
+  })
+  console.log('xxxxxxxxxxxxxx->>>>>>>>>>', linksAssociated.map(elt => elt.toObject()))
+  res.render('pages/collectionDetail', {
+    messages: messages,
+    collection: { ...collection.toObject(), links: linksAssociated.map(elt => elt.toObject()) },
+    title: 'collection-detail',
+    hasErrors: messages.length > 0
+  })
+})
+
+// https://stackoverflow.com/questions/29721225/staying-authenticated-after-the-page-is-refreshed-using-passportjs
 //delete collection,edit,read(all or single)
 //create, delete link,edit,read(all or single)
 //check public /private in case accessing someone else's link

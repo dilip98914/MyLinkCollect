@@ -69,6 +69,12 @@ app.set('view engine', 'ejs')
 // https://www.xml-sitemaps.com/
 // app.disable('x-powered-by')
 
+app.use(function (req, res, next) {
+  res.locals.login = req.isAuthenticated();
+  res.locals.session = req.session;
+  next();
+});
+
 require('./routes')(app)
 
 //default route for health check

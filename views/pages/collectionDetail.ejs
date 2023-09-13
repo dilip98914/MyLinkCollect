@@ -1,0 +1,113 @@
+<%- include('../partials/header') %>
+<div class="container">
+  <section class="p-5">
+    <div class="d-flex justify-content-between mb-5">
+      <form class="d-flex me-5 flex-1 w-50" role="search">
+        <div class="input-group">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <span class="bi bi-search input-group-text"></span>
+        </div>
+      </form>
+      <div class="dropdown">
+        <a class="btn btn-outline-warning" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Sort By
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li><a class="dropdown-item" href="#">Recently Updated</a></li>
+          <li><a class="dropdown-item" href="#">Alphabatically</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card p-3 m-3 border border-1">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex">
+          <img src=" data:image/jpeg;base64,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" style="width: 18rem;height: 10rem;" class="card-img-top img-fluid">
+          <h2 class="ms-3 mt-5 lead w-50">
+            <u><i><%=collection.title%></i></u>
+          </h2>
+        </div>
+
+        <div>
+          <button class="btn btn-secondary btn-sm">Edit</button>
+          <button class="btn btn-danger btn-sm">delete</button>
+        </div>
+      </div>
+      <div class="text-center mt-5">
+        <button type="button" class="btn btn-primary btn" data-bs-toggle="modal" data-bs-target="#addTarget">+ Add Link</button>
+
+        <!-- add modal -->
+        <div class="modal fade" id="addTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Add Link</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="editLink" action="/collection/link" method="POST">
+                  <input type="hidden" name="collection_id" value="<%=collection.id %>">
+                  <input type="text" class="form-control" name="link">
+                  <button type="submit" class="btn btn-primary mt-5">Save changes</button>
+                </form>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+      <%if(collection.links && collection.links.length>0){%>
+      <div class="card-body">
+        <% for(let i=0;i<collection.links.length;i++){ %>
+        <div class="alert alert-secondary d-flex justify-content-between" role="alert">
+          <div>
+            <strong><u> <%= collection.links[i].value%></u></strong>
+            <p><i><%= collection.links[i].source%></i></p>
+          </div>
+          <div class="d-flex align-items-center" id="container0">
+            <p>Added 3 days ago</p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTarget">
+              <i class="bi bi-pencil-square"></i>
+            </button>
+
+            <!-- edit modal -->
+            <div class="modal fade" id="editTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Link</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="editLink" action="/collection/link/edit" method="POST">
+                      <input type="hidden" name="collection_id" value="<%=collection.id %>">
+                      <input type="hidden" name="link_id" value="<%=collection.links[i].id %>">
+                      <input type="text" class="form-control" name="link" value="<%= collection.links[i].value%>">
+                      <button type="submit" class="btn btn-primary mt-5">Save changes</button>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <!-- <button type="submit" class="btn btn-primary">Save changes</button> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+
+
+          </div>
+        </div>
+        <%}%>
+      </div>
+    </div>
+      <%}else{%>
+        <h2 class="mt-5">No Links Exists!</h2>
+        <%}%>
+
+  </section>
+</div>
+<%- include('../partials/bottom') %>
