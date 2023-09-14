@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-3">
+      <form class="card p-4" action="/support" method="POST" enctype="multipart/form-data">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="basic-addon1"> @</span>
+          <input type="text" class="form-control" placeholder="Enter your email" aria-label="Username" aria-describedby="basic-addon1" name="title">
+        </div>
+        <div class="input-group">
+          <span class="input-group-text">Description</span>
+          <textarea class="form-control" aria-label="With textarea" name="description"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-lg mt-5">
+          Submit
+        </button>
+        <p class="lead text-center m-1" id="call-us">Instead Call Us @ 1800 4211 4211</p>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<%- include('../partials/bottom') %>

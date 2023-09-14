@@ -1,16 +1,20 @@
 const express = require('express');
 const Collection = require('../models/collection');
 const router = express.Router()
-const upload = require('../middlewares/multer')
+const uploadToDisk = require('../middlewares/multer')
 const mongoose = require('mongoose');
 const link = require('../models/link');
 const { isLoggedIn, notLoggedIn } = require('../middlewares/auth');
 var cuid = require('cuid');
+const { timeSince } = require('../helpers/utility');
 
-router.post('/', isLoggedIn, upload.single('image_upload'), async (req, res, next) => {
+router.post('/', isLoggedIn, uploadToDisk.single('image'), async (req, res, next) => {
   try {
+    console.log('rrrr', req.file, req.body)
     let { title, description, isPrivate } = req.body;
     if (!isPrivate) isPrivate = false;
+    console.log('rrrr', req.file)
+    res.send('ok')
     /*
     https://medium.com/@kavitanambissan/uploading-and-retrieving-a-file-from-gridfs-using-multer-958dfc9255e8
 
@@ -40,6 +44,7 @@ router.post('/', isLoggedIn, upload.single('image_upload'), async (req, res, nex
     */
     if (req.file) {
       //later
+      console.log('rrrr', req.file)
       return res.send('file upload not implemented!')
       await Collection.create({
         title,
@@ -64,7 +69,7 @@ router.post('/', isLoggedIn, upload.single('image_upload'), async (req, res, nex
       // })
     }
   } catch (err) {
-    console.error(err)
+    console.error("eeeeeeeeeeeeeeeeee", err)
     res.status(500).send({
       message: 'Internal server error!',
       success: false,
@@ -72,6 +77,12 @@ router.post('/', isLoggedIn, upload.single('image_upload'), async (req, res, nex
     })
   }
 })
+
+async function test() {
+
+}
+
+test()
 
 router.get('/add', isLoggedIn, async (req, res, next) => {
   const messages = req.flash('error');
@@ -116,24 +127,21 @@ router.get('/:id', async (req, res, next) => {
   const collection = await Collection.findOne({
     id: req.params.id
   })
-  // await link.create({
-  //   value: 'https://www.youtube.com/watch?v=NSXK3fBDD0c&list=RDGMEM2j3yRsqu_nuzRLnHd2bMVA&start_radio=1&rv=a3B2glol4IU',
-  //   source: 'youtube.com',
-  //   collection_id: collection.id
-  // })
-  // await link.create({
-  //   value: 'https://askubuntu.com/questions/787023/bluetooth-not-working-on-ubuntu-16-04-lts',
-  //   source: 'https://askubuntu.com',
-  //   collection_id: collection.id
-  // })
-
   const linksAssociated = await link.find({
     collection_id: collection.id
+  })
+  const links = linksAssociated.map(elt => {
+    elt = elt.toObject()
+    return {
+      ...elt,
+      source: elt.value.replace(/.+\/\/|www.|\..+/g, ''),
+      timeAgo: timeSince(new Date(elt.createdAt))
+    }
   })
   console.log('xxxxxxxxxxxxxx->>>>>>>>>>', linksAssociated.map(elt => elt.toObject()))
   res.render('pages/collectionDetail', {
     messages: messages,
-    collection: { ...collection.toObject(), links: linksAssociated.map(elt => elt.toObject()) },
+    collection: { ...collection.toObject(), links },
     title: 'collection-detail',
     hasErrors: messages.length > 0
   })
@@ -162,6 +170,5 @@ router.get('/:id', async (req, res, next) => {
 //shareable links and option to share at twitter,facebook,reddit,instagram,quora
 //paginated view for infinite collections
 //on hover show info about links & collection
-
 
 module.exports = router;

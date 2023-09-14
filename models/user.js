@@ -13,6 +13,8 @@ const schema = mongoose.Schema({
     type: String,
     required: [true, "Please provide a password!"],
   },
+  liked: [],
+  viewed: [],
   deletedAt: {
     type: Date,
     default: null,

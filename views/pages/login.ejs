@@ -1,7 +1,7 @@
 <%- include('../partials/header') %>
 <div class="container mt-5">
   <div class="row">
-    <% if(hasErrors){ %>
+    <% if(messages.length > 0){ %>
     <div class="alert alert-danger">
       <% for(let i=0;i<messages.length;i++){ %>
       <p><%=messages[i] %></p>
@@ -9,8 +9,8 @@
         </div>
         <%}%>
 
-      <div class="col-md-8 offset-2">
-        <form action="/user/login" method="POST">
+      <div class="col-md-6 offset-3">
+        <form class="card p-4" action="/user/login" method="POST">
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value="dilip98914@gmail.com" required autofocus>
@@ -22,7 +22,7 @@
           </div>
           <div class="mb-3 form-check">
             <input type="hidden" name="_csrf" value="<%=csrfToken %>">
-            <button type="submit" class="btn btn-primary">Login</button>
+            <button type="submit" class="btn btn-primary me-3">Login</button>
             <a href="/user/register" class="text-secondary">Not Registered?</a>&nbsp;&nbsp;
           </div>
           <!-- <button type="submit" class="btn btn-outline-danger">Register</button> -->

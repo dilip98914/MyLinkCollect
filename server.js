@@ -20,6 +20,7 @@ const validator = require('express-validator');
 const session = require('express-session');
 var fs = require('fs');
 var util = require('util');
+const multer = require('multer');
 var log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
 var log_stdout = process.stdout;
 
@@ -71,6 +72,7 @@ app.set('view engine', 'ejs')
 
 app.use(function (req, res, next) {
   res.locals.login = req.isAuthenticated();
+  res.locals.currentPage = 'homepage'
   res.locals.session = req.session;
   next();
 });

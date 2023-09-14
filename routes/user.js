@@ -6,6 +6,7 @@ const link = require('../models/link');
 
 const { isLoggedIn, notLoggedIn } = require('../middlewares/auth');
 const Collection = require('../models/collection');
+const user = require('../models/user');
 
 const csrfProtection = csrf();
 router.use(csrfProtection);
@@ -20,12 +21,15 @@ router.get('/dashboard', isLoggedIn, async (req, res, next) => {
     const links = await link.find({
       collection_id: collections[i].id
     })
+    const userFound = await user.findOne({ id: collections[i].user_id })
+    collections[i].by = userFound.email
     collections[i].links = links.map(elt => elt.toObject());
   }
-  console.log('aaaaaaa', collections[0].links, collections[0].links, [0])
+  const messages = req.flash('error');
   res.render('pages/dashboard', {
     title: 'dashboard',
-    collections
+    collections,
+    messages
   })
 })
 
@@ -80,9 +84,8 @@ router.get('/login', async (req, res, next) => {
   const messages = req.flash('error');
   res.render('pages/login', {
     csrfToken: req.csrfToken(),
-    messages: messages,
+    messages,
     title: 'login',
-    hasErrors: messages.length > 0
   })
 })
 

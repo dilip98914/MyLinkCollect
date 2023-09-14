@@ -1,6 +1,7 @@
 const multer = require("multer");
 const { GridFsStorage } = require("multer-gridfs-storage");
 const dbConfig = require("../config/key");
+
 // https://www.bezkoder.com/node-js-upload-store-images-mongodb/
 const storage = new GridFsStorage({
   url: dbConfig.mongoURI,
@@ -19,7 +20,19 @@ const storage = new GridFsStorage({
     };
   }
 });
+// const uploadFiles = multer({ storage: storage });
 
-const uploadFiles = multer({ storage: storage });
+const diskStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    console.log('destinsationa')
+    cb(null, './uploads/')
+  },
+  filename: (req, file, cb) => {
+    console.log('filename')
+    cb(null, file.originalname + '-' + Date.now())
+  }
+});
+const uploadToDisk = multer({ storage: diskStorage });
 
-module.exports = uploadFiles
+module.exports = uploadToDisk
+// module.exports = uploadFiles

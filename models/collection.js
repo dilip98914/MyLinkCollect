@@ -11,6 +11,8 @@ const schema = mongoose.Schema({
     type: String,
     default: 'Title'
   },
+  likes: [],
+  views: [],
   description: {
     type: String,
     default: ''

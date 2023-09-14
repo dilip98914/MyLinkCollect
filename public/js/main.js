@@ -10,3 +10,13 @@ $(document).ready(function () {
   })
 });
 
+(function myFunction() {
+  console.log('asaas', document.getElementById("call-us"))
+  var copyText = document.getElementById("#call-us");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(copyText.value);
+  alert("Copied the text: " + copyText.value);
+})()
+
+
