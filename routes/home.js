@@ -7,7 +7,7 @@ const router = express.Router()
 
 router.get('/', async (req, res, next) => {
   res.locals.currentPage = 'homepage'
-  console.log(res.locals)
+  // console.log(res.locals)
   res.render('pages/homepage', {
     title: 'homepage',
     isCurrentPage: res.locals.currentPage == 'homepage' ? 'active' : ''
@@ -16,7 +16,7 @@ router.get('/', async (req, res, next) => {
 
 router.get('/support', async (req, res, next) => {
   res.locals.currentPage = 'support'
-  console.log(res.locals)
+  // console.log(res.locals)
   res.render('pages/support', {
     title: 'support',
     isCurrentPage: res.locals.currentPage == 'support' ? 'active' : ''

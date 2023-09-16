@@ -34,15 +34,15 @@
     <% if(collections.length>0) {%>
     <% for(let i=0;i<collections.length;i++){ %>
     <div class="col-md-4">
-      <a href="/collection/<%=collections[i].id%>">
+      <a href="/collection/<%=collections[i].id%>" class="text-decoration-none">
         <div class="card  m-3 border border-1" style="width: 15rem;">
-          <img src="/image/sampleImage.jpg" style="width: 18rem;height: 8rem;" class="card-img-top img-fluid">
+          <img src="<%= collections[i].thumbnail%>" style="width: 18rem;height: 8rem;" class="card-img-top img-fluid">
           <div class="card-body">
             <div class="d-flex justify-content-between">
               <h5 class="card-title"><%= collections[i].title%></h5>
               <span class=" text-secondary"><%= collections[i].links.length%> Links</span>
             </div>
-            <span class="badge text-bg-secondary mb-3"><%= collections[i].isPrivate%></span>
+            <!-- <span class="badge text-bg-secondary mb-3"><%= collections[i].isPrivate%></span> -->
             <span class="badge text-bg-primary mb-3">by <%= collections[i].by%></span>
             <br>
             <i class="bi bi-balloon-heart-fill"></i>&nbsp; 1

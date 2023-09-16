@@ -21,9 +21,12 @@ router.get('/dashboard', isLoggedIn, async (req, res, next) => {
     const links = await link.find({
       collection_id: collections[i].id
     })
+    const imagePath = collections[i].thumbnail.replace('public', '')
+
     const userFound = await user.findOne({ id: collections[i].user_id })
     collections[i].by = userFound.email
     collections[i].links = links.map(elt => elt.toObject());
+    collections[i].thumbnail = imagePath
   }
   const messages = req.flash('error');
   res.render('pages/dashboard', {

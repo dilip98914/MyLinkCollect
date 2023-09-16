@@ -1,75 +1,92 @@
 const express = require('express');
 const Collection = require('../models/collection');
 const router = express.Router()
-const uploadToDisk = require('../middlewares/multer')
+const upload = require('../middlewares/multer2')
 const mongoose = require('mongoose');
 const link = require('../models/link');
 const { isLoggedIn, notLoggedIn } = require('../middlewares/auth');
 var cuid = require('cuid');
-const { timeSince } = require('../helpers/utility');
+const { timeSince, isValidURL } = require('../helpers/utility');
+const fs = require('fs')
+const shortid = require('shortid');
 
-router.post('/', isLoggedIn, uploadToDisk.single('image'), async (req, res, next) => {
+router.get('/view-image', (req, res) => {
+  // const stat = fs.statSync(req.file.path);
+  // res.writeHead(200, {
+  //   "Content-Type": "image/png",
+  //   'Content-Length': stat.size
+
+  // });
+
+  // fs.createReadStream(req.file.path).pipe(res);
+
+  // alternate
+  return res.send(`
+    <img src='/uploads/google.png'>
+  `)
+})
+
+
+router.get('/share/:id', async (req, res) => {
+  const urlId = shortid.generate();
+  const baseUrl = `http://localhost:8080` //process.env.baseUrl
+  // const shortUrl = `${baseUrl}/${urlId}`;
+  const collection = await Collection.findOne({
+    id: req.params.id
+  })
+  if (!collection.shortUrl) {
+    const coll = await Collection.findOneAndUpdate({
+      id: req.params.id
+    }, {
+      shortUrl: urlId
+    }, {
+      new: true
+    })
+    const linksAssociated = await link.find({
+      collection_id: coll.id
+    })
+    const links = linksAssociated.map(elt => {
+      elt = elt.toObject()
+      return {
+        ...elt,
+        source: elt.value.replace(/.+\/\/|www.|\..+/g, ''),
+        timeAgo: timeSince(new Date(elt.createdAt))
+      }
+    })
+    const messages = req.flash('error');
+    return res.redirect(`/collection/${req.query.id}`)
+    // res.render('pages/collectionDetail', {
+    //   messages: messages,
+    //   collection: { ...coll.toObject(), links },
+    //   title: 'collection-detail',
+    //   hasErrors: messages.length > 0,
+    //   openModal: true
+    // })
+
+  }
+  // req.session.
+  // const collection=await Collection.findOne({
+  //   id:req.params.id
+  // })
+  // return res.redirect(`/collection/${id}`)
+
+})
+
+
+router.post('/', isLoggedIn, upload.single('profile-file'), async (req, res, next) => {
   try {
-    console.log('rrrr', req.file, req.body)
-    let { title, description, isPrivate } = req.body;
-    if (!isPrivate) isPrivate = false;
-    console.log('rrrr', req.file)
-    res.send('ok')
-    /*
-    https://medium.com/@kavitanambissan/uploading-and-retrieving-a-file-from-gridfs-using-multer-958dfc9255e8
-
-    const imageCollection = mongoose.connection.db.collection('images.files');
-    const imageCollectionChunk = mongoose.connection.db.collection('images.chunks');
-
-    const imageFound = await imageCollection.findOne({ filename: req.file.filename })
-    const imageChunks = await imageCollectionChunk.find({
-      files_id: imageFound._id
-    }).sort({ n: 1 })
-    const chunks = await imageChunks.toArray()
-    console.log('aaaaaaaaa----->', imageFound)
-
-    let fileData = [];
-    for (let i = 0; i < chunks.length; i++) {
-      fileData.push(chunks[i].data.toString('base64'));
-    }
-
-    //Display the chunks using the data URI format          
-    let finalFile = 'data:' + imageFound.contentType + ';base64,'
-      + fileData.join('');
-    var fs = require('fs');
-    var some_file = fs.createWriteStream(__dirname + imageFound.filename, { flags: 'w' });
-    return res.send(finalFile);
-    console.log('ssssss', imageCollection)
-    return res.send('ok')
-    */
-    if (req.file) {
-      //later
-      console.log('rrrr', req.file)
-      return res.send('file upload not implemented!')
-      await Collection.create({
-        title,
-        description: description || '',
-        isPrivate: isPrivate,
-        user_id: req.user.id,
-      })
-
-    } else {
-      await Collection.create({
-        id: cuid(),
-        title,
-        description: description || '',
-        isPrivate: isPrivate,
-        user_id: req.user.id
-      })
-      return res.redirect('/user/dashboard')
-      // res.status(200).send({
-      //   message: 'Successfully added collection!',
-      //   success: true,
-      //   data: [collection]
-      // })
-    }
+    // console.log('asssssss', req.file.path)
+    await Collection.create({
+      id: cuid(),
+      title: req.body.title,
+      thumbnail: (req.file && req.file.path) ? req.file.path : (Math.random() > 0.5 ? 'public/uploads/default_thumbnail.png' : 'public/uploads/default_thumbnail2.svg'),
+      description: req.body.description || '',
+      isPrivate: req.body.isPrivate || false,
+      user_id: req.user.id
+    })
+    return res.redirect('/user/dashboard')
   } catch (err) {
-    console.error("eeeeeeeeeeeeeeeeee", err)
+    console.error(err)
     res.status(500).send({
       message: 'Internal server error!',
       success: false,
@@ -77,12 +94,6 @@ router.post('/', isLoggedIn, uploadToDisk.single('image'), async (req, res, next
     })
   }
 })
-
-async function test() {
-
-}
-
-test()
 
 router.get('/add', isLoggedIn, async (req, res, next) => {
   const messages = req.flash('error');
@@ -127,24 +138,27 @@ router.get('/:id', async (req, res, next) => {
   const collection = await Collection.findOne({
     id: req.params.id
   })
-  const linksAssociated = await link.find({
-    collection_id: collection.id
-  })
-  const links = linksAssociated.map(elt => {
-    elt = elt.toObject()
-    return {
-      ...elt,
-      source: elt.value.replace(/.+\/\/|www.|\..+/g, ''),
-      timeAgo: timeSince(new Date(elt.createdAt))
-    }
-  })
-  console.log('xxxxxxxxxxxxxx->>>>>>>>>>', linksAssociated.map(elt => elt.toObject()))
-  res.render('pages/collectionDetail', {
-    messages: messages,
-    collection: { ...collection.toObject(), links },
-    title: 'collection-detail',
-    hasErrors: messages.length > 0
-  })
+  if (collection) {
+    const linksAssociated = await link.find({
+      collection_id: collection.id
+    })
+    const links = linksAssociated.map(elt => {
+      elt = elt.toObject()
+      return {
+        ...elt,
+        source: elt.value.replace(/.+\/\/|www.|\..+/g, ''),
+        timeAgo: timeSince(new Date(elt.createdAt))
+      }
+    })
+    res.render('pages/collectionDetail', {
+      messages: messages,
+      collection: { ...collection.toObject(), links },
+      title: 'collection-detail',
+      hasErrors: messages.length > 0,
+      openModal: false
+    })
+
+  }
 })
 
 // https://stackoverflow.com/questions/29721225/staying-authenticated-after-the-page-is-refreshed-using-passportjs

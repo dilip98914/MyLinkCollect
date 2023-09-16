@@ -21,7 +21,10 @@ const schema = mongoose.Schema({
     type: Boolean,
     default: false
   },
-  filename: {
+  shortUrl: {
+    type: String,
+  },
+  thumbnail: {
     type: String,
     default: null
   },

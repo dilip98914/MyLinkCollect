@@ -17,10 +17,10 @@ const User = require('./models/user')
 var cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const validator = require('express-validator');
-const session = require('express-session');
 var fs = require('fs');
 var util = require('util');
 const multer = require('multer');
+
 var log_file = fs.createWriteStream(__dirname + '/debug.log', { flags: 'w' });
 var log_stdout = process.stdout;
 
@@ -34,7 +34,8 @@ console.error = function (d) { //
   log_stdout.write(util.format(d) + '\n');
 };
 
-app.use(express.static(path.join(process.cwd(), '/public')));
+// app.use(express.static(path.join(process.cwd(), '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 mongoose.connect(config.mongoURI, { useNewUrlParser: true }).then(() => {
   console.log('DB connected!');
@@ -43,7 +44,7 @@ mongoose.connect(config.mongoURI, { useNewUrlParser: true }).then(() => {
 );
 
 require('./middlewares/initPassport')
-
+// 
 app.use(bodyParser.json({ limit: "50mb", strict: false }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(validator());

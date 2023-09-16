@@ -19,7 +19,6 @@ exports.getRandomChoice = function (dataArray) {
 }
 
 exports.timeSince = function (date) {
-  console.log('ddddddddddd', date)
   var seconds = Math.floor((new Date() - date) / 1000);
   var interval = seconds / 31536000;
   if (interval > 1) {
@@ -42,4 +41,12 @@ exports.timeSince = function (date) {
     return Math.floor(interval) + " minutes";
   }
   return Math.floor(seconds) + " seconds";
+}
+
+exports.isValidURL = function (str) {
+  if (/^(http(s):\/\/.)[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/g.test(str)) {
+    console.log('YES');
+  } else {
+    console.log('NO');
+  }
 }

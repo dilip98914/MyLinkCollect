@@ -10,6 +10,9 @@ const schema = mongoose.Schema({
   source: {
     type: String,
   },
+  shortUrl: {
+    type: String,
+  },
   collection_id: {
     type: String,
   },
