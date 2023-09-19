@@ -15,6 +15,7 @@ const schema = mongoose.Schema({
   },
   liked: [],
   viewed: [],
+  logins: [],
   deletedAt: {
     type: Date,
     default: null,

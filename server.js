@@ -44,7 +44,8 @@ mongoose.connect(config.mongoURI, { useNewUrlParser: true }).then(() => {
 );
 
 require('./middlewares/initPassport')
-// 
+var ip = require('ip');
+console.log(ip.address())
 app.use(bodyParser.json({ limit: "50mb", strict: false }));
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(validator());
@@ -55,7 +56,7 @@ app.use(require("express-session")({
   resave: false,
   saveUninitialized: false
 }));
-
+app.set('trust proxy', true)
 app.use(flash())
 app.use(passport.initialize());
 app.use(passport.session());

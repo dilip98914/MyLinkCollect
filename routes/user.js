@@ -13,7 +13,8 @@ router.use(csrfProtection);
 
 router.get('/dashboard', isLoggedIn, async (req, res, next) => {
   let collections = await Collection.find({
-    user_id: req.user.id
+    user_id: req.user.id,
+    deletedAt: null
   })
   collections = collections.map(elt => elt.toObject())
 
@@ -73,12 +74,24 @@ router.get('/register', async (req, res, next) => {
 router.post('/login', passport.authenticate('local.signin', {
   failureRedirect: '/user/login',
   failureFlash: true
-}), function (req, res, next) {
+}), async function (req, res, next) {
   if (req.session.oldUrl) {
     var oldUrl = req.session.oldUrl;
     req.session.oldUrl = null;
     res.redirect(oldUrl);
   } else {
+
+    const loginObject = {
+      lastLogin: new Date(),
+      device: req.device.type,
+    }
+    await user.findOneAndUpdate({
+      id: req.user.id
+    }, {
+      $push: {
+        logins: loginObject
+      }
+    })
     res.redirect('/user/dashboard');
   }
 });

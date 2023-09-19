@@ -1,5 +1,5 @@
 const express = require('express')
-const collection = require('../models/collection')
+const Collection = require('../models/collection')
 const link = require('../models/link')
 const user = require('../models/user')
 const { timeSince } = require('../helpers/utility')
@@ -24,7 +24,7 @@ router.get('/support', async (req, res, next) => {
 })
 
 router.get('/explore', async (req, res, next) => {
-  let collections = await collection.find().limit(20).sort({
+  let collections = await Collection.find({ deletedAt: null }).limit(20).sort({
     createdAt: -1
   })
   collections = collections.map(elt => elt.toObject())
@@ -45,6 +45,39 @@ router.get('/explore', async (req, res, next) => {
     collections,
     messages
   })
+})
+
+router.get('/share/:id', async (req, res) => {
+  try {
+    const messages = req.flash('error');
+    let collection = await Collection.findOne({
+      shortUrl: req.params.id,
+      deletedAt: null
+    })
+    console.log('aaaaaaaaa', req.params)
+    if (!collection) return res.send('not found!')
+    collection = collection.toObject();
+    const linksAssociated = await link.find({
+      collection_id: collection.id
+    })
+    const links = linksAssociated.map(elt => {
+      elt = elt.toObject()
+      return {
+        ...elt,
+        source: elt.value.replace(/.+\/\/|www.|\..+/g, ''),
+        timeAgo: timeSince(new Date(elt.createdAt))
+      }
+    })
+    res.render('pages/collectionDetail', {
+      messages: messages,
+      collection: { ...collection, links },
+      title: 'short-url',
+      hasErrors: messages.length > 0,
+      isPublic: true
+    })
+  } catch (err) {
+    console.error(err);
+  }
 })
 
 module.exports = router;

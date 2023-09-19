@@ -10,79 +10,17 @@ const { timeSince, isValidURL } = require('../helpers/utility');
 const fs = require('fs')
 const shortid = require('shortid');
 
-router.get('/view-image', (req, res) => {
-  // const stat = fs.statSync(req.file.path);
-  // res.writeHead(200, {
-  //   "Content-Type": "image/png",
-  //   'Content-Length': stat.size
-
-  // });
-
-  // fs.createReadStream(req.file.path).pipe(res);
-
-  // alternate
-  return res.send(`
-    <img src='/uploads/google.png'>
-  `)
-})
-
-
-router.get('/share/:id', async (req, res) => {
-  const urlId = shortid.generate();
-  const baseUrl = `http://localhost:8080` //process.env.baseUrl
-  // const shortUrl = `${baseUrl}/${urlId}`;
-  const collection = await Collection.findOne({
-    id: req.params.id
-  })
-  if (!collection.shortUrl) {
-    const coll = await Collection.findOneAndUpdate({
-      id: req.params.id
-    }, {
-      shortUrl: urlId
-    }, {
-      new: true
-    })
-    const linksAssociated = await link.find({
-      collection_id: coll.id
-    })
-    const links = linksAssociated.map(elt => {
-      elt = elt.toObject()
-      return {
-        ...elt,
-        source: elt.value.replace(/.+\/\/|www.|\..+/g, ''),
-        timeAgo: timeSince(new Date(elt.createdAt))
-      }
-    })
-    const messages = req.flash('error');
-    return res.redirect(`/collection/${req.query.id}`)
-    // res.render('pages/collectionDetail', {
-    //   messages: messages,
-    //   collection: { ...coll.toObject(), links },
-    //   title: 'collection-detail',
-    //   hasErrors: messages.length > 0,
-    //   openModal: true
-    // })
-
-  }
-  // req.session.
-  // const collection=await Collection.findOne({
-  //   id:req.params.id
-  // })
-  // return res.redirect(`/collection/${id}`)
-
-})
-
-
 router.post('/', isLoggedIn, upload.single('profile-file'), async (req, res, next) => {
   try {
-    // console.log('asssssss', req.file.path)
     await Collection.create({
       id: cuid(),
       title: req.body.title,
       thumbnail: (req.file && req.file.path) ? req.file.path : (Math.random() > 0.5 ? 'public/uploads/default_thumbnail.png' : 'public/uploads/default_thumbnail2.svg'),
       description: req.body.description || '',
       isPrivate: req.body.isPrivate || false,
-      user_id: req.user.id
+      user_id: req.user.id,
+      shortUrl: shortid.generate()
+
     })
     return res.redirect('/user/dashboard')
   } catch (err) {
@@ -133,11 +71,34 @@ router.post('/link', isLoggedIn, async (req, res, next) => {
   }
 })
 
+
+
+
 router.get('/:id', async (req, res, next) => {
   const messages = req.flash('error');
-  const collection = await Collection.findOne({
-    id: req.params.id
+  let collection = await Collection.findOne({
+    id: req.params.id,
+    deletedAt: null
   })
+
+  let newShortUrl;
+  if (!collection.shortUrl) {
+    newShortUrl = shortid.generate()
+    await Collection.findOneAndUpdate({ id: req.params.id }, { shortUrl: newShortUrl })
+  }
+  if (req.user) {
+    await Collection.findOneAndUpdate({ id: req.params.id }, { $addToSet: { views: req.user.id } })
+  }
+
+  collection = collection.toObject();
+  let url;
+  if (!collection.shortUrl) {
+    url = process.env.NODE_ENV == 'TEST' ? `http://localhost:${process.env.PORT}/share/${newShortUrl}` : `https://production.com/share/${newShortUrl}`
+  } else {
+    url = process.env.NODE_ENV == 'TEST' ? `http://localhost:${process.env.PORT}/share/${collection['shortUrl']}` : `https://production.com/share/${collection['shortUrl']}`
+  }
+  collection['shortUrl'] = url
+  console.log(';assasa', collection)
   if (collection) {
     const linksAssociated = await link.find({
       collection_id: collection.id
@@ -152,12 +113,64 @@ router.get('/:id', async (req, res, next) => {
     })
     res.render('pages/collectionDetail', {
       messages: messages,
-      collection: { ...collection.toObject(), links },
+      collection: { ...collection, links },
       title: 'collection-detail',
       hasErrors: messages.length > 0,
-      openModal: false
+      isPrivate: collection.isPrivate
     })
 
+  }
+})
+
+//user can do its own collections only
+router.post('/delete/:id', async (req, res) => {
+  try {
+    const result = await Collection.findOne({
+      id: req.params.id,
+      deletedAt: null
+
+    })
+    if (result.user_id !== req.user.id) {
+      req.flash('error', ['You do not have permission to delete this collection!'])
+      return res.redirect(`/user/dashboard`)
+    }
+    if (!result) {
+      req.flash('error', ['Collection do not exists!'])
+      return res.redirect(`/user/dashboard`)
+    }
+    await Collection.findOneAndUpdate({ id: req.params.id }, { deletedAt: new Date() })
+    req.flash('error', [`Collection : ${result.title} is successfully deleted!`])
+    return res.redirect(`/user/dashboard`)
+  } catch (err) {
+    console.error(err)
+    req.flash('error', [`something went wrong`])
+    return res.redirect(`/user/dashboard`)
+  }
+})
+
+//user can do its own collections only
+router.post('/edit/:id', async (req, res) => {
+  try {
+    const result = await Collection.findOne({
+      id: req.params.id,
+      deletedAt: null
+
+    })
+    if (result.user_id !== req.user.id) {
+      req.flash('error', ['You do not have permission to delete this collection!'])
+      return res.redirect(`/user/dashboard`)
+    }
+    if (!result) {
+      req.flash('error', ['Collection do not exists!'])
+      return res.redirect(`/user/dashboard`)
+    }
+    await Collection.findOneAndUpdate({ id: req.params.id }, { title: req.body.title, description: req.body.description, isPrivate: req.body.isPrivate == 'true' ? true : false })
+    req.flash('error', [`Collection : ${result.title} is successfully edited!`])
+    return res.redirect(`/user/dashboard`)
+  } catch (err) {
+    console.error(err)
+    req.flash('error', [`something went wrong`])
+    return res.redirect(`/user/dashboard`)
   }
 })
 

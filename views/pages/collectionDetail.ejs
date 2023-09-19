@@ -1,29 +1,44 @@
 <%- include('../partials/header') %>
+
+<% if(isPrivate){ %>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6 offset-3 mt-5">
+      <form>
+        <div class="input-group">
+          <input class="form-control" placeholder="Enter password to unlock:  <%= collection.title%>">
+          <button class="btn btn-secondary">
+            <i class="bi bi-unlock-fill"></i> &nbsp
+          </button>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<%}else {%>
 <div class="container">
 
-  <!-- share modal -->
-  <!-- <div class="modal fade" id="shareTarget" 
-  tabindex="-1" 
-  aria-labelledby="exampleModalLabel" 
-  aria-hidden="true">
+  <div class="modal fade" id="shareTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Add Link</h1>
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Share Link</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form id="editLink" action="/collection/link" method="POST">
             <input type="hidden" name="collection_id" value="<%=collection.id %>">
-            <input type="text" class="form-control" name="link">
-            <button type="submit" class="btn btn-primary mt-5">Save changes</button>
+            <input type="text" class="form-control" name="link" value="<%= collection.shortUrl%>">
+            <!-- <button type="submit" class="btn btn-primary mt-5">Save changes</button> -->
           </form>
         </div>
         <div class="modal-footer">
         </div>
       </div>
     </div>
-  </div> -->
+  </div>
 
   <section class="p-5">
     <div class="d-flex justify-content-between mb-5">
@@ -48,37 +63,44 @@
         <h2 class="ms-3 lead">
           &nbsp;<p class="lead fs-1 text-danger text-center"><%=collection.title%></p>
         </h2>
+        <% if(isPublic!==true){ %>
         <button type="button" class="btn btn-primary btn" data-bs-toggle="modal" data-bs-target="#addTarget">+ Add Link</button>
-
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center">
-          <img src="<%= collection.thumbnail.replace('public', '')%>" style="width: 18rem;height: 10rem;" class="card-img-top img-fluid text-center">
-          <div>
-            <button class="btn btn-secondary btn">
-              <i class="bi bi-pen"></i>&nbsp;
-            </button>
-            <button class="btn btn-danger btn">
-              <i class="bi bi-trash"></i>&nbsp;
-            </button>
-            <a href="/collection/share/<%= collection.id%>" class="btn btn-success btn">
-              <i class="bi bi-share-fill"></i>&nbsp;
-            </a>
+        <%}%>
+    
           </div>
-        </div>
-        <div class="text-center mt-5">
-          <!-- add modal -->
-          <div class="modal fade" id="addTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+              <img src="<%= collection.thumbnail.replace('public', '')%>" style="width: 18rem;height: 10rem;" class="card-img-top img-fluid text-center">
+        <div>
+          <% if(isPublic!==true){ %>
+          <button type="button" class="btn btn-secondary btn" data-bs-toggle="modal" data-bs-target="#editCollectionTarget">
+            <i class="bi bi-pen"></i>&nbsp;
+          </button>
+          <div class="modal fade" id="editCollectionTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">Add Link</h1>
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Collection</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <form id="editLink" action="/collection/link" method="POST">
-                    <input type="hidden" name="collection_id" value="<%=collection.id %>">
-                    <input type="text" class="form-control" name="link">
+                  <form id="editLink" action="/collection/edit/<%= collection.id %>" method="POST">
+
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Title</span>
+                      <input type="text" class="form-control" name="title" value="<%= collection.title%>">
+                    </div>
+
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Description</span>
+                      <input type="text" class="form-control" name="description" value="<%= collection.description%>">
+                    </div>
+
+                    <div class="input-group mb-3">
+                      <span class="input-group-text" id="basic-addon1">Is Private</span>
+                      <input type="text" class="form-control" name="isPrivate" value="<%= collection.isPrivate%>">
+                    </div>
+
                     <button type="submit" class="btn btn-primary mt-5">Save changes</button>
                   </form>
                 </div>
@@ -88,23 +110,31 @@
             </div>
           </div>
 
-        </div>
-        <%if(collection.links && collection.links.length>0){%>
-        <div class="card-body">
-          <% for(let i=0;i<collection.links.length;i++){ %>
-          <div class="alert alert-secondary d-flex justify-content-between" role="alert">
-            <div>
-              <a href="<%= collection.links[i].value%>" target="_blank"> <%= collection.links[i].value%></a>
-              <p><i><%= collection.links[i].source%></i></p>
-            </div>
-            <div class="d-flex align-items-center" id="container0">
-              <p class="me-3 text-secondary"><%= collection.links[i].timeAgo%></p>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTarget">
-                <i class="bi bi-pencil-square"></i>
-              </button>
 
-              <!-- edit modal -->
-              <div class="modal fade" id="editTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <button type="button" class="btn btn-danger btn" data-bs-toggle="modal" data-bs-target="#deleteTarget">
+            <i class="bi bi-trash"></i>&nbsp;
+          </button>
+          <div class="modal fade" id="deleteTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Delete Collection</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="editLink" action="/collection/delete/<%= collection.id %>" method="POST">
+                    <button type="submit" class="btn btn-primary mt-5">Are You Sure?</button>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="btn btn-success btn" data-bs-toggle="modal" data-bs-target="#shareTarget">
+            <i class="bi bi-share-fill"></i>&nbsp;
+          </button>
+          <!-- <div class="modal fade" id="shareTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
                     <div class="modal-header">
@@ -114,29 +144,94 @@
                     <div class="modal-body">
                       <form id="editLink" action="/collection/link/edit" method="POST">
                         <input type="hidden" name="collection_id" value="<%=collection.id %>">
-                        <input type="hidden" name="link_id" value="<%=collection.links[i].id %>">
-                        <input type="text" class="form-control" name="link" value="<%= collection.links[i].value%>">
                         <button type="submit" class="btn btn-primary mt-5">Save changes</button>
                       </form>
                     </div>
                     <div class="modal-footer">
-                      <!-- <button type="submit" class="btn btn-primary">Save changes</button> -->
                     </div>
                   </div>
                 </div>
-              </div>
-
+              </div> -->
+          <%}%>
             </div>
           </div>
-          <%}%>
+          <div class="text-center mt-5">
+            <!-- add modal -->
+            <div class="modal fade" id="addTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add Link</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="editLink" action="/collection/link" method="POST">
+                      <input type="hidden" name="collection_id" value="<%=collection.id %>">
+          <input type="text" class="form-control" name="link">
+          <button type="submit" class="btn btn-primary mt-5">Save changes</button>
+          </form>
+        </div>
+        <div class="modal-footer">
         </div>
       </div>
-
     </div>
-      <%}else{%>
-          <h2 class="mt-5">No Links Exists!</h2>
-          <%}%>
-
-  </section>
 </div>
+
+</div>
+<%if(collection.links && collection.links.length>0){%>
+<div class="card-body">
+  <% for(let i=0;i<collection.links.length;i++){ %>
+  <div class="alert alert-secondary d-flex justify-content-between" role="alert">
+    <div>
+      <a href="<%= collection.links[i].value%>" target="_blank"> <%= collection.links[i].value%></a>
+      <p><i><%= collection.links[i].source%></i></p>
+    </div>
+    <div class="d-flex align-items-center" id="container0">
+      <p class="me-3 text-secondary"><%= collection.links[i].timeAgo%></p>
+      <% if(isPublic!==true){ %>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTarget">
+        <i class="bi bi-pencil-square"></i>
+      </button>
+      <button type="button" class="btn btn-danger ms-3" data-bs-toggle="modal" data-bs-target="">
+        <i class="bi bi-eye-fill"></i>
+      </button>
+      <!-- <iframe src="https://getbootstrap.com/docs/5.3/extend/icons/" title="W3Schools Free Online Web Tutorials"> -->
+      <%}%>
+          <!-- edit modal -->
+          <div class="modal fade" id="editTarget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Link</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <form id="editLink" action="/collection/link/edit" method="POST">
+                    <input type="hidden" name="collection_id" value="<%=collection.id %>">
+      <input type="hidden" name="link_id" value="<%=collection.links[i].id %>">
+      <input type="text" class="form-control" name="link" value="<%= collection.links[i].value%>">
+      <button type="submit" class="btn btn-primary mt-5">Save changes</button>
+      </form>
+    </div>
+    <div class="modal-footer">
+    </div>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+<%}%>
+            </div>
+          </div>
+    
+        </div>
+          <%}else{%>
+<h2 class="mt-5">No Links Exists!</h2>
+<%}%>
+    
+      </section>
+    </div>
+    
+    <%}%>
 <%- include('../partials/bottom') %>

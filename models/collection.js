@@ -21,6 +21,10 @@ const schema = mongoose.Schema({
     type: Boolean,
     default: false
   },
+  password: {
+    type: String,
+    default: null
+  },
   shortUrl: {
     type: String,
   },
