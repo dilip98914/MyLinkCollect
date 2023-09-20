@@ -63,7 +63,7 @@
         <h2 class="ms-3 lead">
           &nbsp;<p class="lead fs-1 text-danger text-center"><%=collection.title%></p>
         </h2>
-        <% if(isPublic!==true){ %>
+        <% if(isCurrAuthor==true){ %>
         <button type="button" class="btn btn-primary btn" data-bs-toggle="modal" data-bs-target="#addTarget">+ Add Link</button>
         <%}%>
     
@@ -72,7 +72,7 @@
             <div class="d-flex justify-content-between align-items-center">
               <img src="<%= collection.thumbnail.replace('public', '')%>" style="width: 18rem;height: 10rem;" class="card-img-top img-fluid text-center">
         <div>
-          <% if(isPublic!==true){ %>
+          <% if(isCurrAuthor==true){ %>
           <button type="button" class="btn btn-secondary btn" data-bs-toggle="modal" data-bs-target="#editCollectionTarget">
             <i class="bi bi-pen"></i>&nbsp;
           </button>
@@ -188,7 +188,7 @@
     </div>
     <div class="d-flex align-items-center" id="container0">
       <p class="me-3 text-secondary"><%= collection.links[i].timeAgo%></p>
-      <% if(isPublic!==true){ %>
+      <% if(isCurrAuthor==true){ %>
       <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editTarget">
         <i class="bi bi-pencil-square"></i>
       </button>

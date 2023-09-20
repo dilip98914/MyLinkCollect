@@ -12,29 +12,16 @@ const csrfProtection = csrf();
 router.use(csrfProtection);
 
 router.get('/dashboard', isLoggedIn, async (req, res, next) => {
-  let collections = await Collection.find({
-    user_id: req.user.id,
-    deletedAt: null
-  })
-  collections = collections.map(elt => elt.toObject())
-
-  for (let i = 0; i < collections.length; i++) {
-    const links = await link.find({
-      collection_id: collections[i].id
-    })
-    const imagePath = collections[i].thumbnail.replace('public', '')
-
-    const userFound = await user.findOne({ id: collections[i].user_id })
-    collections[i].by = userFound.email
-    collections[i].links = links.map(elt => elt.toObject());
-    collections[i].thumbnail = imagePath
-  }
   const messages = req.flash('error');
-  res.render('pages/dashboard', {
-    title: 'dashboard',
-    collections,
-    messages
-  })
+  const data = await getDashboardData(req.url, messages, req.user)
+  console.log('sasasas', data)
+  res.render('pages/dashboard', data)
+})
+
+router.get('/bookmarks', isLoggedIn, async (req, res, next) => {
+  const messages = req.flash('error');
+  const data = await getDashboardData(req.url, messages, req.user)
+  res.render('pages/dashboard', data)
 })
 
 router.get('/logout', isLoggedIn, async function (req, res, next) {
@@ -105,5 +92,57 @@ router.get('/login', async (req, res, next) => {
   })
 })
 
+async function getDashboardData(url, messages, userFound) {
+  try {
+    const isBookmarks = url.includes('bookmark');
+    console.log("hiiiiiiiiiiii", messages)
+    let collections;
+    if (isBookmarks) {
+      collections = await Collection.find({
+        user_id: userFound.id,
+        deletedAt: null,
+        id: { $in: userFound.favs }
+      })
+    } else {
+      collections = await Collection.find({
+        user_id: userFound.id,
+        deletedAt: null,
+      })
+    }
+
+    if (!collections.length) {
+      return {
+        title: url,
+        isBookmarks,
+        collections: [],
+        messages
+      }
+    }
+
+    for (let i = 0; i < collections.length; i++) {
+      collections[i] = collections[i].toObject()
+      const imagePath = collections[i].thumbnail.replace('public', '')
+
+      const [links] = await Promise.all([
+        link.find({
+          collection_id: collections[i].id
+        }),
+      ])
+
+      collections[i].by = userFound.email
+      collections[i].links = links.map(elt => elt.toObject());
+      collections[i].thumbnail = imagePath
+    }
+    return {
+      title: url,
+      collections,
+      messages,
+      isBookmarks,
+    }
+  } catch (err) {
+    console.error(err)
+    return { error: true }
+  }
+}
 
 module.exports = router;

@@ -4,7 +4,7 @@ const router = express.Router()
 const upload = require('../middlewares/multer2')
 const mongoose = require('mongoose');
 const link = require('../models/link');
-const { isLoggedIn, notLoggedIn } = require('../middlewares/auth');
+const { isLoggedIn, notLoggedIn, isAuthor } = require('../middlewares/auth');
 var cuid = require('cuid');
 const { timeSince, isValidURL } = require('../helpers/utility');
 const fs = require('fs')
@@ -71,15 +71,14 @@ router.post('/link', isLoggedIn, async (req, res, next) => {
   }
 })
 
-
-
-
 router.get('/:id', async (req, res, next) => {
   const messages = req.flash('error');
   let collection = await Collection.findOne({
     id: req.params.id,
     deletedAt: null
   })
+  const isCurrAuthor = isAuthor(req.user, collection)
+  console.log('asasasa', isCurrAuthor)
 
   let newShortUrl;
   if (!collection.shortUrl) {
@@ -116,7 +115,8 @@ router.get('/:id', async (req, res, next) => {
       collection: { ...collection, links },
       title: 'collection-detail',
       hasErrors: messages.length > 0,
-      isPrivate: collection.isPrivate
+      isPrivate: collection.isPrivate,
+      isCurrAuthor
     })
 
   }

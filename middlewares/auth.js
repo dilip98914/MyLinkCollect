@@ -11,9 +11,15 @@ function notLoggedIn(req, res, next) {
   if (!req.isAuthenticated()) {
     return next();
   } else {
-    req.flash('error', ['you are already logged In!'])
+    // req.flash('error', ['you are already logged In!'])
     res.redirect('/user/dashboard');
   }
 }
 
-module.exports = { isLoggedIn, notLoggedIn }
+function isAuthor(user, collection) {
+  if (!user || !collection) return false
+  if (collection.user_id == user.id) return true
+  return false
+}
+
+module.exports = { isLoggedIn, notLoggedIn, isAuthor }
