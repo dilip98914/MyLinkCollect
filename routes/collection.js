@@ -1,5 +1,6 @@
 const express = require('express');
 const Collection = require('../models/collection');
+const User = require('../models/user');
 const router = express.Router()
 const upload = require('../middlewares/multer2')
 const mongoose = require('mongoose');
@@ -33,6 +34,38 @@ router.post('/', isLoggedIn, upload.single('profile-file'), async (req, res, nex
   }
 })
 
+router.get('/do-bookmark/:id', isLoggedIn, async (req, res, next) => {
+  try {
+    const collection = await Collection.findOne({ id: req.params.id })
+    const isCurrAuthor = isAuthor(req.user, collection)
+    if (!isCurrAuthor) {
+      req.flash('err', 'do not have enough permission!')
+      return res.redirect('/user/dashboard')
+    }
+
+    const result = req.user.favs.filter(elt => elt == req.params.id)
+    if (!result.length) {
+      console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+      await User.findOneAndUpdate({
+        email: req.user.email
+      }, {
+        $addToSet: { favs: req.params.id }
+      })
+      return res.redirect('/user/bookmarks')
+    } else {
+      console.log('bbbbbbbbbbbbbbbbbb', req.params.id)
+      await User.findOneAndUpdate({
+        id: req.params.id
+      }, {
+        $pullAll: { favs: [req.params.id] }
+      })
+      return res.redirect('/user/dashboard')
+    }
+  } catch (err) {
+    console.error(err)
+    res.redirect('/')
+  }
+})
 router.get('/add', isLoggedIn, async (req, res, next) => {
   const messages = req.flash('error');
   res.render('pages/addCollection', {
