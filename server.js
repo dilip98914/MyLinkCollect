@@ -40,7 +40,7 @@ app.use(express.static(path.join(__dirname, '/public')));
 mongoose.connect(config.mongoURI, { useNewUrlParser: true }).then(() => {
   console.log('DB connected!');
 }).catch(err =>
-  console.log("err->>>>>>>>>>>>>>>>>>>>..")
+  console.log(err,"err->>>>>>>>>>>>>>>>>>>>..")
 );
 
 require('./middlewares/initPassport')
